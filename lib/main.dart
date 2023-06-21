@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school/home_screen.dart';
-import 'package:school/splash_screen.dart';
+import 'package:school/screens/splash_screen.dart';
 import 'package:school/theme/themes.dart';
 
 void main() {

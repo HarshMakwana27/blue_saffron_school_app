@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school/gallary_screen.dart';
+import 'package:school/screens/about.dart';
+import 'package:school/screens/gallary_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -40,11 +41,21 @@ class MainDrawer extends StatelessWidget {
                     //   'Pre-School',
                     //   style: TextStyle(color: Colors.white, fontSize: 20),
                     // ),
-                    Expanded(
-                        child: Image.asset(
-                      'assets/images/blue_saffron_logo.png',
-                      width: width * 0.7,
-                    ))
+                    CircleAvatar(
+                      radius: width * 0.1,
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      child: Image.asset(
+                        'assets/images/teacher.png',
+                      ),
+                    ),
+                    const Text(
+                      'Nehal Gohil',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    const Text(
+                      '(Pricipal)',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ],
                 ),
               ],
@@ -67,6 +78,25 @@ class MainDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GallaryScreen()));
+            },
+          ),
+          ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            horizontalTitleGap: 20,
+            leading: const Icon(
+              Icons.school,
+              color: Color.fromARGB(255, 0, 0, 0),
+              size: 30,
+            ),
+            title: Text(
+              'About School',
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary, fontSize: 18),
+            ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutScreen()));
             },
           ),
         ]),

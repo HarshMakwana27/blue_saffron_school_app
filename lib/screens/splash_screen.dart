@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:school/home_screen.dart';
+import 'package:school/screens/home_screen.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class SplashScreen extends StatelessWidget {
