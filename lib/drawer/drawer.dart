@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/about.dart';
+import 'package:school/screens/add_student.dart';
 import 'package:school/screens/gallary_screen.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -61,44 +63,9 @@ class MainDrawer extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            horizontalTitleGap: 20,
-            leading: const Icon(
-              Icons.image,
-              color: Color.fromARGB(255, 0, 0, 0),
-              size: 30,
-            ),
-            title: Text(
-              'Gallary',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 18),
-            ),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GallaryScreen()));
-            },
-          ),
-          ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            horizontalTitleGap: 20,
-            leading: const Icon(
-              Icons.school,
-              color: Color.fromARGB(255, 0, 0, 0),
-              size: 30,
-            ),
-            title: Text(
-              'About School',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 18),
-            ),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AboutScreen()));
-            },
-          ),
+          DrawerTile('Gallary', Icons.image, GallaryScreen()),
+          const DrawerTile('About', Icons.info, AboutScreen()),
+          const DrawerTile('Add new Student', Icons.add, AddStudent())
         ]),
       ),
     );

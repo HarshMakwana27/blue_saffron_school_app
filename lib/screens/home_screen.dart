@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school/drawer.dart';
+import 'package:school/drawer/drawer.dart';
+import 'package:school/screens/students_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -96,27 +97,34 @@ class HomeScreen extends StatelessWidget {
                   // color: Theme.of(context).colorScheme.background,
                   // shadowColor: Theme.of(context).colorScheme.background,
                   surfaceTintColor: Theme.of(context).colorScheme.background,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        width: 55,
-                        height: 55,
-                        child: Icon(
-                          Icons.people_outline,
-                          size: 50,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => const StudentsList(),
+                      ));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          width: 55,
+                          height: 55,
+                          child: const Icon(
+                            Icons.people_outline,
+                            size: 50,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Students list',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
-                    ],
+                        const Text(
+                          'Students list',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
