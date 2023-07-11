@@ -4,7 +4,7 @@ enum Gender { male, female }
 
 enum Medium { english, gujarati }
 
-enum Standard { KG1, KG2 }
+enum Standard { kg1, kg2 }
 
 class Student {
   Student({
@@ -14,7 +14,6 @@ class Student {
     required this.gender,
     required this.medium,
     required this.standard,
-    required this.joiningDate,
   });
   String key;
   int rollNumber;
@@ -22,7 +21,6 @@ class Student {
   Gender gender;
   Medium medium;
   Standard standard;
-  DateTime joiningDate;
 }
 
 Map<String, DateAndAttendance> studentAttendance = {};

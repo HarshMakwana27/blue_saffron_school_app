@@ -12,8 +12,8 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print(width);
-    return Container(
+
+    return SizedBox(
       width: width * 0.8,
       child: Drawer(
         child: Column(children: [
@@ -63,9 +63,31 @@ class MainDrawer extends StatelessWidget {
               ],
             ),
           ),
-          DrawerTile('Gallary', Icons.image, GallaryScreen()),
+          const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
-          const DrawerTile('Add new Student', Icons.add, AddStudent())
+          const DrawerTile('Add new Student', Icons.add, AddStudent()),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Made with ',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  size: 15,
+                ),
+                Text(
+                  ' by Harsh Makwana',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ],
+            ),
+          ),
         ]),
       ),
     );

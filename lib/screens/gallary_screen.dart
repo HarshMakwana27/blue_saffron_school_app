@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class GallaryScreen extends StatelessWidget {
-  GallaryScreen({super.key});
+  const GallaryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
