@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school/model/student.dart';
 import 'package:http/http.dart' as http;
+import 'package:school/widgets/student_tile.dart';
 import 'dart:convert';
 
 import 'package:toggle_switch/toggle_switch.dart';
@@ -16,6 +17,8 @@ class _AddStudentState extends State<AddStudent> {
   final formKey = GlobalKey<FormState>();
   String name = '';
   int rollNo = 0;
+  Gender? gender;
+  Medium medium = Medium.english;
 
   void saveInfo() {
     if (formKey.currentState!.validate()) {
@@ -66,11 +69,46 @@ class _AddStudentState extends State<AddStudent> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Container(
               //   height: 20,
               //   color: Theme.of(context).colorScheme.primary,
               // ),
+
+              Row(
+                children: [
+                  Text(
+                    'Medium : ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  Expanded(
+                    child: DropdownButtonFormField<Medium>(
+                        value: medium,
+                        items: [
+                          DropdownMenuItem(
+                            value: Medium.english,
+                            child: Text(Medium.english.name.capitalize()),
+                          ),
+                          DropdownMenuItem(
+                            value: Medium.gujarati,
+                            child: Text(Medium.gujarati.name.capitalize()),
+                          )
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            medium = value!;
+                          });
+                        }),
+                  ),
+                ],
+              ),
 
               TextFormField(
                 style: Theme.of(context).textTheme.bodyLarge,
@@ -117,11 +155,15 @@ class _AddStudentState extends State<AddStudent> {
                 height: 10,
               ),
 
+              const Text('Gender of the student'),
+              const SizedBox(
+                height: 10,
+              ),
               ToggleSwitch(
-                minWidth: 90.0,
+                minWidth: 70,
                 initialLabelIndex: 1,
-                minHeight: 35,
-                cornerRadius: 10,
+                minHeight: 25,
+                cornerRadius: 7,
                 activeFgColor: Colors.white,
                 inactiveBgColor: Colors.grey,
                 inactiveFgColor: Colors.white,
@@ -133,12 +175,15 @@ class _AddStudentState extends State<AddStudent> {
                 ],
                 onToggle: (index) {
                   if (index == 0) {
-                    print('boy');
+                    gender = Gender.male;
                   }
                   if (index == 1) {
-                    print('girl');
+                    gender = Gender.female;
                   }
                 },
+              ),
+              const SizedBox(
+                height: 10,
               ),
               ElevatedButton(onPressed: saveInfo, child: const Text("save"))
             ],
