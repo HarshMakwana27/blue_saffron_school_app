@@ -21,11 +21,11 @@ class StudentTile extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         title: Text(
-          student.name.capitalize(),
+          student.name,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         subtitle: Row(
-          children: [Text('${student.medium.name.capitalize()} Medium')],
+          children: [Text('${student.medium.name} Medium')],
         ),
         trailing: const Icon(
           Icons.abc,

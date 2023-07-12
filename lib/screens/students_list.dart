@@ -71,7 +71,6 @@ class _StudentsListState extends State<StudentsList> {
             standard: standard,
           ),
         );
-        print(tempList.length);
       }
 
       setState(() {
