@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/about.dart';
 import 'package:school/screens/add_student.dart';
@@ -11,7 +10,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    //double height = MediaQuery.of(context).size.height;
 
     return SizedBox(
       width: width * 0.8,
@@ -19,7 +18,7 @@ class MainDrawer extends StatelessWidget {
         child: Column(children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
+              gradient: RadialGradient(colors: [
                 Theme.of(context).colorScheme.primary,
                 Theme.of(context).colorScheme.primary,
               ]),
@@ -63,9 +62,9 @@ class MainDrawer extends StatelessWidget {
               ],
             ),
           ),
+          const DrawerTile('Add new Student', Icons.add, AddStudent()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
-          const DrawerTile('Add new Student', Icons.add, AddStudent()),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),

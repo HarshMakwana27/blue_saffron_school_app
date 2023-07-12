@@ -3,7 +3,7 @@ import 'package:school/model/student.dart';
 
 extension StringExtensions on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1)}";
+    return "${this[0].toUpperCase()}${substring(1)}";
   }
 }
 
@@ -25,7 +25,7 @@ class StudentTile extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         subtitle: Row(
-          children: [Text('${student.medium.name} Medium')],
+          children: [Text('${student.medium.name.capitalize()} Medium')],
         ),
         trailing: const Icon(
           Icons.abc,
