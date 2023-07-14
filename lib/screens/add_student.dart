@@ -5,6 +5,7 @@ import 'package:school/screens/students_list.dart';
 import 'package:school/widgets/student_tile.dart';
 import 'dart:convert';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddStudent extends StatefulWidget {
   const AddStudent({super.key});
@@ -280,7 +281,8 @@ class _AddStudentState extends State<AddStudent> {
                       TextFormField(
                         style: Theme.of(context).textTheme.bodyLarge,
                         decoration: const InputDecoration(
-                            label: Text('Roll number'), icon: Icon(Icons.abc)),
+                            label: Text('Roll number'),
+                            icon: Icon(FontAwesomeIcons.idCard)),
                         keyboardType: TextInputType.number,
                         cursorWidth: 1,
                         validator: (value) {
