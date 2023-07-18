@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "7135927870",
+    "firebase_url": "https://bluesaffron-d1ba1-default-rtdb.firebaseio.com",
+    "project_id": "bluesaffron-d1ba1",
+    "storage_bucket": "bluesaffron-d1ba1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7135927870:android:a13e56da1cd7f0552d7b6f",
+        "android_client_info": {
+          "package_name": "com.example.school"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7135927870-j048cjfg31aueltkgpsgu1bj4kf8p6cb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4qjyTiBNdN_tmYVmLZ5rBJqKRAqnrD7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7135927870-j048cjfg31aueltkgpsgu1bj4kf8p6cb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "7135927870-d11bddjcar3gsstf0r6humfs8avtq4c1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.school"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
