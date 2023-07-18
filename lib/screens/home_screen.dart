@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school/drawer/drawer.dart';
 import 'package:school/screens/students_list.dart';
+import 'package:school/screens/students_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -100,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const StudentsList(),
+                        builder: (ctx) => const studentList(),
                       ));
                     },
                     child: Column(

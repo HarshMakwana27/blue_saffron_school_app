@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:school/model/student.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +8,9 @@ import 'package:school/widgets/student_tile.dart';
 import 'dart:convert';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = const Uuid();
 
 class AddStudent extends StatefulWidget {
   const AddStudent({super.key});
@@ -17,8 +22,8 @@ class AddStudent extends StatefulWidget {
 class _AddStudentState extends State<AddStudent> {
   final formKey = GlobalKey<FormState>();
   String? name;
-  int? rollNo;
-  Gender? gender;
+  int? uid;
+  Gender gender = Gender.male;
   Medium medium = Medium.english;
   Standard standard = Standard.kg1;
 
@@ -138,33 +143,31 @@ class _AddStudentState extends State<AddStudent> {
         isLoading = true;
       });
 
-      final url = Uri.https('bluesaffron-d1ba1-default-rtdb.firebaseio.com',
-          'students-list.json');
+      final studentUuid = uuid.v4();
 
-      final response = await http.post(
-        url,
-        headers: {'Content-type': 'application/json'},
-        body: jsonEncode(
-          {
-            'rollNo': rollNo,
-            'name': name,
-            'gender': gender.toString(),
-            'medium': medium.toString(),
-            'standard': standard.toString(),
-          },
-        ),
-      );
-
-      if (response.statusCode >= 400) {
+      try {
+        await FirebaseFirestore.instance
+            .collection('students')
+            .doc('${medium.name}/${standard.name}/$uid')
+            .set({
+          'uuid': studentUuid,
+          'uid': uid,
+          'name': name,
+          'gender': gender.name.toString(),
+          'medium': medium.name.toString(),
+          'standard': standard.name.toString(),
+        });
+        setState(() {
+          isLoading = false;
+          isSuccessFun();
+        });
+      } on FirebaseException catch (error) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error.message ?? "Authentication Failed")));
         setState(() {
           isLoading = false;
         });
-        isNotSuccessFun();
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        isSuccessFun();
       }
     }
   }
@@ -181,190 +184,180 @@ class _AddStudentState extends State<AddStudent> {
               .copyWith(color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Container(
-                      //   height: 20,
-                      //   color: Theme.of(context).colorScheme.primary,
-                      // ),
-                      Text(
-                        'Academic Info',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              decoration: TextDecoration.underline,
-                            ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Academic Info',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        decoration: TextDecoration.underline,
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: DropdownButtonFormField<Medium>(
-                              value: medium,
-                              items: [
-                                DropdownMenuItem(
-                                  value: Medium.english,
-                                  child: Text(Medium.english.name.capitalize()),
-                                ),
-                                DropdownMenuItem(
-                                  value: Medium.gujarati,
-                                  child:
-                                      Text(Medium.gujarati.name.capitalize()),
-                                )
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  medium = value!;
-                                });
-                              },
-                              decoration:
-                                  const InputDecoration(label: Text('Medium')),
-                              icon: const Icon(Icons.abc_rounded),
-                            ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<Medium>(
+                        value: medium,
+                        items: [
+                          DropdownMenuItem(
+                            value: Medium.english,
+                            child: Text(Medium.english.name.capitalize()),
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: DropdownButtonFormField<Standard>(
-                              alignment: Alignment.bottomCenter,
-                              value: standard,
-                              isDense: true,
-                              items: const [
-                                DropdownMenuItem(
-                                  value: Standard.kg1,
-                                  child: Text('Kg 1'),
-                                ),
-                                DropdownMenuItem(
-                                  value: Standard.kg2,
-                                  child: Text('Kg 2'),
-                                )
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  standard = value!;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                  label: Text('Standard')),
-                              icon: const Icon(Icons.class_),
-                            ),
-                          ),
+                          DropdownMenuItem(
+                            value: Medium.gujarati,
+                            child: Text(Medium.gujarati.name.capitalize()),
+                          )
                         ],
-                      ),
-
-                      const SizedBox(
-                        height: 30,
-                      ),
-
-                      Text(
-                        'Personal Info',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              decoration: TextDecoration.underline,
-                            ),
-                      ),
-
-                      TextFormField(
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        decoration: const InputDecoration(
-                            label: Text('Roll number'),
-                            icon: Icon(FontAwesomeIcons.idCard)),
-                        keyboardType: TextInputType.number,
-                        cursorWidth: 1,
-                        validator: (value) {
-                          if (int.tryParse(value!) == null) {
-                            return 'Must be a number';
-                          }
-                          return null;
+                        onChanged: (value) {
+                          setState(() {
+                            medium = value!;
+                          });
                         },
-                        onSaved: (value) {
-                          rollNo = int.tryParse(value!)!;
-                        },
+                        decoration:
+                            const InputDecoration(label: Text('Medium')),
+                        icon: const Icon(Icons.abc_rounded),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        maxLength: 35,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        decoration: const InputDecoration(
-                          label: Text('Name of the student'),
-                          icon: Icon(
-                            Icons.account_circle_rounded,
-                            size: 28,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: DropdownButtonFormField<Standard>(
+                        alignment: Alignment.bottomCenter,
+                        value: standard,
+                        isDense: true,
+                        items: const [
+                          DropdownMenuItem(
+                            value: Standard.kg1,
+                            child: Text('Kg 1'),
                           ),
-                        ),
-                        keyboardType: TextInputType.name,
-                        cursorWidth: 1,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Name can not be empty';
-                          }
-                          if (value.length <= 1) {
-                            return 'Name must be between 1 to 35 characters';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          name = value!;
-                        },
-                      ),
-
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.male_rounded,
-                            size: 30,
-                          ),
-                          const SizedBox(
-                            width: 13,
-                          ),
-                          ToggleSwitch(
-                            minWidth: 90,
-                            initialLabelIndex: 0,
-                            minHeight: 35,
-                            cornerRadius: 7,
-                            activeFgColor: Colors.white,
-                            inactiveBgColor: Colors.grey,
-                            inactiveFgColor: Colors.white,
-                            totalSwitches: 2,
-                            labels: const ['Boy', 'Girl'],
-                            activeBgColors: const [
-                              [Colors.blue],
-                              [Colors.pink]
-                            ],
-                            onToggle: (index) {
-                              if (index == 0) {
-                                gender = Gender.male;
-                              }
-                              if (index == 1) {
-                                gender = Gender.female;
-                              }
-                            },
-                          ),
+                          DropdownMenuItem(
+                            value: Standard.kg2,
+                            child: Text('Kg 2'),
+                          )
                         ],
+                        onChanged: (value) {
+                          setState(() {
+                            standard = value!;
+                          });
+                        },
+                        decoration:
+                            const InputDecoration(label: Text('Standard')),
+                        icon: const Icon(Icons.class_),
                       ),
-                      const SizedBox(
-                        height: 20,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'Personal Info',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        decoration: TextDecoration.underline,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
+                ),
+                TextFormField(
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  decoration: const InputDecoration(
+                      label: Text('Roll number'),
+                      icon: Icon(FontAwesomeIcons.idCard)),
+                  keyboardType: TextInputType.number,
+                  cursorWidth: 1,
+                  validator: (value) {
+                    if (int.tryParse(value!) == null) {
+                      return 'Must be a number';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    uid = int.tryParse(value!)!;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  maxLength: 35,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  decoration: const InputDecoration(
+                    label: Text('Name of the student'),
+                    icon: Icon(
+                      Icons.account_circle_rounded,
+                      size: 28,
+                    ),
+                  ),
+                  keyboardType: TextInputType.name,
+                  cursorWidth: 1,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Name can not be empty';
+                    }
+                    if (value.length <= 1) {
+                      return 'Name must be between 1 to 35 characters';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    name = value!;
+                  },
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.male_rounded,
+                      size: 30,
+                    ),
+                    const SizedBox(
+                      width: 13,
+                    ),
+                    ToggleSwitch(
+                      minWidth: 90,
+                      initialLabelIndex: 0,
+                      minHeight: 35,
+                      cornerRadius: 7,
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      inactiveFgColor: Colors.white,
+                      totalSwitches: 2,
+                      labels: const ['Boy', 'Girl'],
+                      activeBgColors: const [
+                        [Colors.blue],
+                        [Colors.pink]
+                      ],
+                      onToggle: (index) {
+                        if (index == 0) {
+                          gender = Gender.male;
+                        }
+                        if (index == 1) {
+                          gender = Gender.female;
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ElevatedButton(
                             onPressed: saveInfo,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -373,18 +366,18 @@ class _AddStudentState extends State<AddStudent> {
                                     Theme.of(context).colorScheme.onPrimary),
                             child: const Text("save"),
                           ),
-                          TextButton(
-                              onPressed: () {
-                                formKey.currentState!.reset();
-                              },
-                              child: const Text("Reset")),
-                        ],
-                      ),
-                    ],
-                  ),
+                    TextButton(
+                        onPressed: () {
+                          formKey.currentState!.reset();
+                        },
+                        child: const Text("Reset")),
+                  ],
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
+      ),
     );
   }
 }

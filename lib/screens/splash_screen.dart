@@ -106,9 +106,9 @@ class BottomPart extends StatelessWidget {
                       stream: FirebaseAuth.instance.authStateChanges(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return HomeScreen();
+                          return const HomeScreen();
                         }
-                        return ChooseCategory();
+                        return const ChooseCategory();
                       });
                 }));
               },

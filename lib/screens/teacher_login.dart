@@ -19,6 +19,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
 
   String _email = '';
   String _password = '';
+  // ignore: unused_field
   String _name = '';
 
   void _forgetPassword() async => showModalBottomSheet(
@@ -83,8 +84,8 @@ class _TeacherLoginState extends State<TeacherLogin> {
                           Navigator.of(context).pop(); // Close the bottom sheet
 
                           try {
-                            final status = await _firebaseAuth
-                                .sendPasswordResetEmail(email: _email);
+                            await _firebaseAuth.sendPasswordResetEmail(
+                                email: _email);
 
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).clearSnackBars();
