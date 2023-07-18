@@ -12,6 +12,7 @@ class TeacherLogin extends StatefulWidget {
 
 class _TeacherLoginState extends State<TeacherLogin> {
   final _formKey = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
   bool _isLogin = true;
 
   bool _isLoading = false;
@@ -19,6 +20,108 @@ class _TeacherLoginState extends State<TeacherLogin> {
   String _email = '';
   String _password = '';
   String _name = '';
+
+  void _forgetPassword() async => showModalBottomSheet(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      builder: (ctx) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Form(
+            key: _formKey2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Reset Password',
+                  style: TextStyle(fontSize: 22),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'A Link to reset your password will be sent to your registered email address',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: "Enter your registered email",
+                    icon: Icon(
+                      Icons.account_box_rounded,
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  autofocus: true,
+                  autocorrect: false,
+                  textCapitalization: TextCapitalization.none,
+                  validator: (value) {
+                    if (value == null ||
+                        value.trim().isEmpty ||
+                        !value.contains("@")) {
+                      return "Please Enter a valid email address";
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _email = value!;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const Spacer(),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        if (_formKey2.currentState!.validate()) {
+                          _formKey2.currentState!.save();
+
+                          try {
+                            final status = await _firebaseAuth
+                                .sendPasswordResetEmail(email: _email);
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context)
+                                .pop(); // Close the bottom sheet
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Password reset email sent successfully!'),
+                                duration: Duration(
+                                    seconds:
+                                        3), // You can set the duration for which the SnackBar is visible.
+                              ),
+                            );
+                          } on FirebaseAuthException catch (error) {
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  error.toString(),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.send_rounded),
+                      label: const Text('Send'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      });
 
   void _onSave() async {
     if (_formKey.currentState!.validate()) {
@@ -175,7 +278,14 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         });
                       },
                       child: Text(
-                          _isLogin ? 'Create an Account' : 'Log In Instead'))
+                          _isLogin ? 'Create an Account' : 'Log In Instead')),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  if (_isLogin)
+                    TextButton(
+                        onPressed: _forgetPassword,
+                        child: const Text('Forget Password?'))
                 ],
               ),
             ),

@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
         theme: theme,
         darkTheme: darkTheme,
-        home: SplashScreen(),
+        home: const SplashScreen(),
         themeMode: ThemeMode.light);
   }
 }
