@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
@@ -98,12 +100,17 @@ class BottomPart extends StatelessWidget {
           ),
           ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => const ChooseCategory(),
-                  ),
-                );
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(builder: (ctx) {
+                  return StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return HomeScreen();
+                        }
+                        return ChooseCategory();
+                      });
+                }));
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 35),

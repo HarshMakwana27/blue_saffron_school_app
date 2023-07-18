@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+final _firebaseAuth = FirebaseAuth.instance;
 
 class TeacherLogin extends StatefulWidget {
   const TeacherLogin({super.key});
@@ -15,13 +18,32 @@ class _TeacherLoginState extends State<TeacherLogin> {
 
   String _email = '';
   String _password = '';
-  String _username = '';
+  String _name = '';
 
-  void _onSave() {
+  void _onSave() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_email);
-      print(_password);
+
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+
+        if (_isLogin) {
+          await _firebaseAuth.signInWithEmailAndPassword(
+              email: _email, password: _password);
+        } else {
+          await _firebaseAuth.createUserWithEmailAndPassword(
+              email: _email, password: _password);
+        }
+      } on FirebaseAuthException catch (error) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error.message ?? "Authentication Failed")));
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -109,7 +131,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                   ),
                   if (!_isLogin)
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      // style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Username',
                         icon: Icon(
@@ -127,7 +149,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         return null;
                       },
                       onSaved: (value) {
-                        _username = value!;
+                        _name = value!;
                       },
                     ),
                   const SizedBox(

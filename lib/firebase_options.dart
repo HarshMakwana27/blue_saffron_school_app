@@ -65,7 +65,8 @@ class DefaultFirebaseOptions {
     projectId: 'bluesaffron-d1ba1',
     databaseURL: 'https://bluesaffron-d1ba1-default-rtdb.firebaseio.com',
     storageBucket: 'bluesaffron-d1ba1.appspot.com',
-    iosClientId: '7135927870-d11bddjcar3gsstf0r6humfs8avtq4c1.apps.googleusercontent.com',
+    iosClientId:
+        '7135927870-d11bddjcar3gsstf0r6humfs8avtq4c1.apps.googleusercontent.com',
     iosBundleId: 'com.example.school',
   );
 }
