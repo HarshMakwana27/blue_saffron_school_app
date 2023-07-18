@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+import 'package:school/keys.dart';
+
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -49,24 +51,7 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC4qjyTiBNdN_tmYVmLZ5rBJqKRAqnrD7s',
-    appId: '1:7135927870:android:a13e56da1cd7f0552d7b6f',
-    messagingSenderId: '7135927870',
-    projectId: 'bluesaffron-d1ba1',
-    databaseURL: 'https://bluesaffron-d1ba1-default-rtdb.firebaseio.com',
-    storageBucket: 'bluesaffron-d1ba1.appspot.com',
-  );
+  static const FirebaseOptions android = android1;
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCVp_hehU6tV82auSCKqBPusWlDH1_Jg4k',
-    appId: '1:7135927870:ios:ba24e7dbe0051e162d7b6f',
-    messagingSenderId: '7135927870',
-    projectId: 'bluesaffron-d1ba1',
-    databaseURL: 'https://bluesaffron-d1ba1-default-rtdb.firebaseio.com',
-    storageBucket: 'bluesaffron-d1ba1.appspot.com',
-    iosClientId:
-        '7135927870-d11bddjcar3gsstf0r6humfs8avtq4c1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.school',
-  );
+  static const FirebaseOptions ios = ios1;
 }
