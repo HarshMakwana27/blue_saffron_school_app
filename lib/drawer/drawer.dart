@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/about.dart';
@@ -65,6 +66,24 @@ class MainDrawer extends StatelessWidget {
           const DrawerTile('Add new Student', Icons.add, AddStudent()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
+          ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            horizontalTitleGap: 20,
+            leading: const Icon(
+              Icons.logout_rounded,
+              color: Color.fromARGB(255, 0, 0, 0),
+              size: 30,
+            ),
+            title: Text(
+              'Log out',
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary, fontSize: 18),
+            ),
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
+          ),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),

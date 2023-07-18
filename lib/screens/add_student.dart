@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school/model/student.dart';
 import 'package:http/http.dart' as http;
-import 'package:school/screens/students_list.dart';
+
 import 'package:school/widgets/student_tile.dart';
 import 'dart:convert';
 import 'package:toggle_switch/toggle_switch.dart';

@@ -80,13 +80,12 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       onPressed: () async {
                         if (_formKey2.currentState!.validate()) {
                           _formKey2.currentState!.save();
+                          Navigator.of(context).pop(); // Close the bottom sheet
 
                           try {
                             final status = await _firebaseAuth
                                 .sendPasswordResetEmail(email: _email);
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context)
-                                .pop(); // Close the bottom sheet
+
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).clearSnackBars();
                             // ignore: use_build_context_synchronously
@@ -135,6 +134,9 @@ class _TeacherLoginState extends State<TeacherLogin> {
         if (_isLogin) {
           await _firebaseAuth.signInWithEmailAndPassword(
               email: _email, password: _password);
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         } else {
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: _email, password: _password);
