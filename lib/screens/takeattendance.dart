@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:school/widgets/attendance_tile.dart';
-
 import 'package:school/screens/stepper.dart';
 
 class AttendanceData {

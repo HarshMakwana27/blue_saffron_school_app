@@ -76,6 +76,7 @@ class BottomPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SizedBox(
       height: height * 0.35,
       child: Column(
@@ -113,9 +114,8 @@ class BottomPart extends StatelessWidget {
                 }));
               },
               style: ElevatedButton.styleFrom(
-                fixedSize: const Size(200, 35),
+                fixedSize: Size(width * 0.9, 50),
                 foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               child: const Text('Get Started !')),
         ],

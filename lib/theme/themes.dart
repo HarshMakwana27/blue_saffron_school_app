@@ -32,13 +32,15 @@ const kDarkColorScheme = ColorScheme(
 );
 
 final theme = ThemeData().copyWith(
-  useMaterial3: true,
-  colorScheme: kColorScheme,
-  textTheme: GoogleFonts.poppinsTextTheme().copyWith(),
-  appBarTheme: AppBarTheme(
-    color: kColorScheme.background,
-  ),
-);
+    useMaterial3: true,
+    colorScheme: kColorScheme,
+    textTheme: GoogleFonts.poppinsTextTheme().copyWith(),
+    appBarTheme: AppBarTheme(
+      color: kColorScheme.background,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style:
+            ElevatedButton.styleFrom(backgroundColor: kColorScheme.primary)));
 
 final darkTheme = ThemeData().copyWith(
     dividerColor: Colors.transparent,

@@ -4,6 +4,7 @@ import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/about.dart';
 import 'package:school/screens/add_student.dart';
 import 'package:school/screens/gallary_screen.dart';
+import 'package:school/screens/student_keys.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -66,6 +67,7 @@ class MainDrawer extends StatelessWidget {
           const DrawerTile('Add new Student', Icons.add, AddStudent()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
+          const DrawerTile('Keys', Icons.key, StudentKey()),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

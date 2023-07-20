@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:school/screens/choose.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
+final _dbRef = FirebaseDatabase.instance;
 
 class TeacherLogin extends StatefulWidget {
   const TeacherLogin({super.key});
@@ -20,8 +23,10 @@ class _TeacherLoginState extends State<TeacherLogin> {
 
   String _email = '';
   String _password = '';
-  // ignore: unused_field
+
   String _name = '';
+  int? _uid;
+  int? _studentKey;
 
   void _forgetPassword() async => showModalBottomSheet(
       isScrollControlled: true,
@@ -140,13 +145,32 @@ class _TeacherLoginState extends State<TeacherLogin> {
             Navigator.of(context).pop();
           }
         } else {
+          // if (!isTeacher!) {
+          //   // Check if the provided uid and key exist in the database
+          //   final userRef =
+          //       FirebaseFirestore.instance.collection('students').doc('$_uid');
+          //   final userDocSnapshot = await userRef.get();
+
+          //   if (!userDocSnapshot.exists) {
+          //     // ignore: use_build_context_synchronously
+          //     ScaffoldMessenger.of(context).showSnackBar(
+          //       const SnackBar(
+          //         content: Text('Invalid UID or Key. Please try again.'),
+          //       ),
+          //     );
+          //     setState(() {
+          //       _isLoading = false;
+          //     });
+          //     return;
+          //   }
+          // }
           final userCredentials =
               await _firebaseAuth.createUserWithEmailAndPassword(
                   email: _email, password: _password);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
+          // Send email verification to the user's email address
+          // await userCredentials.user!.sendEmailVerification();
 
+          // Save user details in Firestore collection (Optional)
           await FirebaseFirestore.instance
               .collection('teachers')
               .doc(userCredentials.user!.uid)
@@ -172,6 +196,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -252,6 +277,20 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       _password = value!;
                     },
                   ),
+                  if (_isLogin)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            onPressed: _forgetPassword,
+                            child: const Text(
+                              'Forget Password?',
+                              style: TextStyle(
+                                fontSize: 10,
+                              ),
+                            )),
+                      ],
+                    ),
                   if (!_isLogin)
                     TextFormField(
                       // style: const TextStyle(color: Colors.white),
@@ -275,14 +314,51 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         _name = value!;
                       },
                     ),
+                  if (!_isLogin)
+                    TextFormField(
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                          label: Text('Uid'), icon: Icon(Icons.card_giftcard)),
+                      keyboardType: TextInputType.number,
+                      cursorWidth: 1,
+                      validator: (value) {
+                        if (int.tryParse(value!) == null) {
+                          return 'Must be a number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _uid = int.tryParse(value!)!;
+                      },
+                    ),
+                  if (!_isLogin)
+                    TextFormField(
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                          label: Text('Key'), icon: Icon(Icons.key)),
+                      keyboardType: TextInputType.number,
+                      cursorWidth: 1,
+                      validator: (value) {
+                        if (int.tryParse(value!) == null) {
+                          return 'Must be a number';
+                        }
+                        if (value.trim().length != 4) {
+                          return 'Must be a 4 digit number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _studentKey = int.tryParse(value!)!;
+                      },
+                    ),
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   _isLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(300, 6),
+                              fixedSize: Size(width * 0.9, 6),
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               foregroundColor:
@@ -302,10 +378,6 @@ class _TeacherLoginState extends State<TeacherLogin> {
                   const SizedBox(
                     height: 25,
                   ),
-                  if (_isLogin)
-                    TextButton(
-                        onPressed: _forgetPassword,
-                        child: const Text('Forget Password?'))
                 ],
               ),
             ),
