@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 extension StringExtensions on String {
   String capitalize() {
@@ -14,23 +15,36 @@ class StudentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
-      leading: CircleAvatar(
-        backgroundColor: student['gender'] == 'male'
-            ? Colors.blue.withOpacity(0.1)
-            : Colors.pink.withOpacity(0.1),
-      ),
-      title: Text(
-        student['name'].toString().capitalize(),
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
-      subtitle: Row(
-        children: [Text('uuid : ${student['uid'].toString().capitalize()}')],
-      ),
-      trailing: const Icon(
-        Icons.abc,
-        size: 40,
-      ),
-    );
+        onTap: () {},
+        title: Text(
+          student['name'].toString().capitalize(),
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        subtitle: Row(
+          children: [Text('uuid : ${student['uid'].toString().capitalize()}')],
+        ),
+        trailing: ToggleSwitch(
+          fontSize: 10,
+          minWidth: 70,
+          initialLabelIndex: 1,
+          minHeight: 35,
+          cornerRadius: 7,
+          activeFgColor: Colors.white,
+          inactiveBgColor: Colors.grey,
+          inactiveFgColor: Colors.white,
+          totalSwitches: 2,
+          labels: const [
+            'Preset',
+            'Absent',
+          ],
+          activeBgColors: const [
+            [Colors.lightGreen],
+            [Colors.red]
+          ],
+          onToggle: (index) {
+            if (index == 0) {}
+            if (index == 1) {}
+          },
+        ));
   }
 }

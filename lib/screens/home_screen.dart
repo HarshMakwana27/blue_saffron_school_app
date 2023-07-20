@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:school/drawer/drawer.dart';
 import 'package:school/screens/students_list.dart';
+import 'package:school/screens/takeattendance.dart';
+import 'package:school/screens/stepper.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -67,30 +69,37 @@ class HomeScreen extends StatelessWidget {
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10),
               children: [
-                Card(
-                  shadowColor: Theme.of(context).colorScheme.onBackground,
-                  surfaceTintColor: Theme.of(context).colorScheme.background,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        width: 55,
-                        height: 55,
-                        child: Image.asset(
-                          'assets/images/students.png',
-                          width: 50,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => StepperCode(0),
+                    ));
+                  },
+                  child: Card(
+                    shadowColor: Theme.of(context).colorScheme.onBackground,
+                    surfaceTintColor: Theme.of(context).colorScheme.background,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          width: 55,
+                          height: 55,
+                          child: Image.asset(
+                            'assets/images/students.png',
+                            width: 50,
+                          ),
                         ),
-                      ),
-                      const Text(
-                        'Take Attendance',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
-                    ],
+                        const Text(
+                          'Take Attendance',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Card(
@@ -100,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const StepperCode(),
+                        builder: (ctx) => const StepperCode(1),
                       ));
                     },
                     child: Column(
