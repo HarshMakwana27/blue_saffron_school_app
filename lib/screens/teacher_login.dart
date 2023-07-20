@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -139,8 +140,24 @@ class _TeacherLoginState extends State<TeacherLogin> {
             Navigator.of(context).pop();
           }
         } else {
-          await _firebaseAuth.createUserWithEmailAndPassword(
-              email: _email, password: _password);
+          final userCredentials =
+              await _firebaseAuth.createUserWithEmailAndPassword(
+                  email: _email, password: _password);
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+
+          await FirebaseFirestore.instance
+              .collection('teachers')
+              .doc(userCredentials.user!.uid)
+              .set({
+            'name': _name,
+            'email': _email,
+          });
+
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         }
       } on FirebaseAuthException catch (error) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -239,18 +256,18 @@ class _TeacherLoginState extends State<TeacherLogin> {
                     TextFormField(
                       // style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Name',
                         icon: Icon(
                           Icons.person,
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
                       ),
-                      obscureText: true,
+
                       validator: (value) {
                         if (value == null ||
                             value.trim().isEmpty ||
                             value.length < 4) {
-                          return "Username should be 4 letters long";
+                          return "Name should be 4 letters long";
                         }
                         return null;
                       },

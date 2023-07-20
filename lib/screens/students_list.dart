@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:school/widgets/student_tile.dart';
 
 String medium = 'english';
 String standard = 'kg1';
@@ -46,15 +47,15 @@ class _StudentListState extends State<StudentList> {
               itemBuilder: (ctx, index) {
                 // Check if the index is valid
                 if (index >= 0 && index < loadedMessage.length) {
-                  final name = loadedMessage[index].data()['name'];
-                  return Text(name);
+                  final student = loadedMessage[index].data();
+                  return StudentTile(student);
                 } else {
                   return const Text("Invalid index");
                 }
               },
             );
           } catch (e) {
-            return Text('Error: $e');
+            return Center(child: Text('Error: $e'));
           }
         },
       ),
@@ -79,11 +80,11 @@ class _StepperCodeState extends State<StepperCode> {
         title: const Text('Students List'),
       ),
       body: Stepper(
-          stepIconBuilder: (stepIndex, stepState) {
-            return CircleAvatar(
-              child: Icon(stepIndex == 0 ? Icons.abc : Icons.ac_unit_outlined),
-            );
-          },
+          // stepIconBuilder: (stepIndex, stepState) {
+          //   return CircleAvatar(
+          //     child: Icon(stepIndex == 0 ? Icons.abc : Icons.ac_unit_outlined),
+          //   );
+          // },
           currentStep: _index,
           onStepContinue: () {
             if (_index < 1) {

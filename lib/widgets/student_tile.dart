@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school/model/student.dart';
 
 extension StringExtensions on String {
   String capitalize() {
@@ -10,29 +9,28 @@ extension StringExtensions on String {
 class StudentTile extends StatelessWidget {
   const StudentTile(this.student, {super.key});
 
-  final Student student;
+  final Map<String, dynamic> student;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        onTap: () {},
-        leading: Text(
-          student.rollNumber.toString(),
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        title: Text(
-          student.name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        subtitle: Row(
-          children: [Text('${student.medium.name.capitalize()} Medium')],
-        ),
-        trailing: const Icon(
-          Icons.abc,
-          size: 40,
-        ),
-        tileColor: student.gender.name == 'male'
+      onTap: () {},
+      leading: CircleAvatar(
+        backgroundColor: student['gender'] == 'male'
             ? Colors.blue.withOpacity(0.1)
-            : Colors.pink.withOpacity(0.1));
+            : Colors.pink.withOpacity(0.1),
+      ),
+      title: Text(
+        student['name'].toString().capitalize(),
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      subtitle: Row(
+        children: [Text('uuid : ${student['uid'].toString().capitalize()}')],
+      ),
+      trailing: const Icon(
+        Icons.abc,
+        size: 40,
+      ),
+    );
   }
 }
