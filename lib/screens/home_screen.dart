@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school/drawer/drawer.dart';
 
 import 'package:school/screens/stepper.dart';
@@ -12,56 +13,56 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text('Blue Saffron School',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontWeight: FontWeight.w600, color: Colors.white)),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
+        leading: const NewWidget(),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: 290,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
               ),
             ),
-            padding: const EdgeInsets.only(
-                top: 10, left: 30.0, right: 30.0, bottom: 30.0),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Welcome,',
-                  style: TextStyle(color: Colors.white),
+                const Text(
+                  '25',
+                  style: TextStyle(fontSize: 40, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                const Text(
+                  'August',
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                const SizedBox(height: 100),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [],
                 ),
                 Text(
-                  'Nehal Gohil',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  'Blue Saffron School',
+                  style: GoogleFonts.aboreto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      wordSpacing: 3,
+                      letterSpacing: 1.5),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 10),
           Expanded(
             child: GridView(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 1,
@@ -101,16 +102,14 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Card(
-                  // color: Theme.of(context).colorScheme.background,
-                  // shadowColor: Theme.of(context).colorScheme.background,
-                  surfaceTintColor: Theme.of(context).colorScheme.background,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const StepperCode(1),
-                      ));
-                    },
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => const StepperCode(1),
+                    ));
+                  },
+                  child: Card(
+                    surfaceTintColor: Theme.of(context).colorScheme.background,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -141,6 +140,30 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: const MainDrawer(),
+    );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: const Icon(
+            Icons.menu_rounded,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        );
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/about.dart';
 import 'package:school/screens/add_student.dart';
+import 'package:school/screens/choose.dart';
 import 'package:school/screens/gallary_screen.dart';
 import 'package:school/screens/student_keys.dart';
 
@@ -47,16 +48,13 @@ class MainDrawer extends StatelessWidget {
                     CircleAvatar(
                       radius: width * 0.1,
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                      child: Image.asset(
-                        'assets/images/teacher.png',
-                      ),
                     ),
                     const Text(
                       'Nehal Gohil',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     const Text(
-                      '(Pricipal)',
+                      '(Student)',
                       style: TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
@@ -68,6 +66,7 @@ class MainDrawer extends StatelessWidget {
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
           const DrawerTile('Keys', Icons.key, StudentKey()),
+          const SizedBox(),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
