@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school/drawer/drawer.dart';
-import 'package:school/screens/students_list.dart';
-import 'package:school/screens/takeattendance.dart';
+
 import 'package:school/screens/stepper.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -72,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (ctx) => StepperCode(0),
+                      builder: (ctx) => const StepperCode(0),
                     ));
                   },
                   child: Card(
