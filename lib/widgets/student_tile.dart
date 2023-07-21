@@ -15,12 +15,16 @@ class StudentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {},
+      leading: CircleAvatar(
+        backgroundColor:
+            student['gender'] == 'male' ? Colors.lightBlue : Colors.pinkAccent,
+      ),
       title: Text(
         student['name'].toString().capitalize(),
         style: Theme.of(context).textTheme.titleLarge,
       ),
       subtitle: Row(
-        children: [Text('uuid : ${student['uid'].toString().capitalize()}')],
+        children: [Text('Uid : ${student['uid'].toString().capitalize()}')],
       ),
       trailing: const Icon(
         Icons.abc,

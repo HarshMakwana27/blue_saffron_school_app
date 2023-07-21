@@ -222,9 +222,11 @@ class _KeysListPageState extends State<KeysListPage> {
       await _db.ref('$userType/$uid').remove();
 
       // Show a success message or perform any other actions after deletion
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Key for UID $uid has been deleted.")),
-      );
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Key for UID $uid has been deleted.")),
+        );
+      });
     } on FirebaseException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error deleting the key: ${error.message}")),

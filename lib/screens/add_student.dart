@@ -270,8 +270,7 @@ class _AddStudentState extends State<AddStudent> {
                 TextFormField(
                   style: Theme.of(context).textTheme.bodyLarge,
                   decoration: const InputDecoration(
-                      label: Text('Roll number'),
-                      icon: Icon(FontAwesomeIcons.idCard)),
+                      label: Text('Uid'), icon: Icon(FontAwesomeIcons.idCard)),
                   keyboardType: TextInputType.number,
                   cursorWidth: 1,
                   validator: (value) {

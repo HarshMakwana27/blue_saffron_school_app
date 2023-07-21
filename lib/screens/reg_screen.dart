@@ -26,7 +26,57 @@ class _TeacherLoginState extends State<TeacherLogin> {
 
   String _name = '';
   int? _uid;
-  int? _studentKey;
+  int? _key;
+
+  Future<bool> validateUidAndKey(int uid, int key, bool isStudent) async {
+    final userType = isStudent ? 'students' : 'teachers';
+
+    try {
+      // Fetch the user data from the database based on the entered UID
+      final dataSnapshot = await _dbRef.ref('$userType/$uid').once();
+      final userData = dataSnapshot.snapshot.value;
+
+      if (userData != null && userData is Map<dynamic, dynamic>) {
+        final Map<String, dynamic> typedData =
+            Map<String, dynamic>.from(userData);
+
+        if (typedData['key'] == key) {
+          // The UID and key match, allow registration
+          return true;
+        } else {
+          // The UID and key do not match, display an error message
+          setState(() {
+            _isLoading = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content:
+                      Text("Invalid UID or Key. Please check and try again.")),
+            );
+          });
+
+          return false;
+        }
+      } else {
+        // The UID and key do not match, display an error message
+        setState(() {
+          _isLoading = false;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content:
+                    Text("Invalid UID or Key. Please check and try again.")),
+          );
+        });
+
+        return false;
+      }
+    } catch (error) {
+      // Handle any errors that occur during the data fetching process
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error fetching user data: $error")),
+      );
+      return false;
+    }
+  }
 
   void _forgetPassword() async => showModalBottomSheet(
       isScrollControlled: true,
@@ -145,42 +195,43 @@ class _TeacherLoginState extends State<TeacherLogin> {
             Navigator.of(context).pop();
           }
         } else {
-          // if (!isTeacher!) {
-          //   // Check if the provided uid and key exist in the database
-          //   final userRef =
-          //       FirebaseFirestore.instance.collection('students').doc('$_uid');
-          //   final userDocSnapshot = await userRef.get();
+          final isUidAndKeyValid =
+              await validateUidAndKey(_uid!, _key!, isStudent!);
 
-          //   if (!userDocSnapshot.exists) {
-          //     // ignore: use_build_context_synchronously
-          //     ScaffoldMessenger.of(context).showSnackBar(
-          //       const SnackBar(
-          //         content: Text('Invalid UID or Key. Please try again.'),
-          //       ),
-          //     );
-          //     setState(() {
-          //       _isLoading = false;
-          //     });
-          //     return;
-          //   }
-          // }
-          final userCredentials =
-              await _firebaseAuth.createUserWithEmailAndPassword(
-                  email: _email, password: _password);
-          // Send email verification to the user's email address
-          // await userCredentials.user!.sendEmailVerification();
+          if (isUidAndKeyValid) {
+            // Proceed with user registration
+            final userCredentials =
+                await _firebaseAuth.createUserWithEmailAndPassword(
+                    email: _email, password: _password);
 
-          // Save user details in Firestore collection (Optional)
-          await FirebaseFirestore.instance
-              .collection('teachers')
-              .doc(userCredentials.user!.uid)
-              .set({
-            'name': _name,
-            'email': _email,
-          });
+            if (isStudent!) {
+              await FirebaseFirestore.instance
+                  .collection('parents')
+                  .doc(userCredentials.user!.uid)
+                  .set({
+                'name': _name,
+                'email': _email,
+              });
+            } else {
+              await FirebaseFirestore.instance
+                  .collection('teachers')
+                  .doc(userCredentials.user!.uid)
+                  .set({
+                'name': _name,
+                'email': _email,
+              });
+            }
+            setState(() {
+              _isLoading = false;
+            });
+            // Send email verification to the user's email address
+            // await userCredentials.user!.sendEmailVerification();
 
-          if (context.mounted) {
-            Navigator.of(context).pop();
+            // Save user details in Firestore collection (Optional)
+
+            if (context.mounted) {
+              Navigator.of(context).pop();
+            }
           }
         }
       } on FirebaseAuthException catch (error) {
@@ -348,7 +399,7 @@ class _TeacherLoginState extends State<TeacherLogin> {
                         return null;
                       },
                       onSaved: (value) {
-                        _studentKey = int.tryParse(value!)!;
+                        _key = int.tryParse(value!)!;
                       },
                     ),
                   const SizedBox(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school/screens/reg_screen.dart';
 
-bool? isTeacher;
+bool? isStudent;
 
 class ChooseCategory extends StatelessWidget {
   const ChooseCategory({super.key});
@@ -25,7 +25,7 @@ class ChooseCategory extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary),
                 onPressed: () {
-                  isTeacher = true;
+                  isStudent = false;
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const TeacherLogin(),
@@ -43,7 +43,7 @@ class ChooseCategory extends StatelessWidget {
                   fixedSize: Size(width * 0.9, 50),
                 ),
                 onPressed: () {
-                  isTeacher = false;
+                  isStudent = true;
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => const TeacherLogin(),
