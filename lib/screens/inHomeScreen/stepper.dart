@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:school/screens/students_list.dart';
-import 'package:school/screens/takeattendance.dart';
+import 'package:school/screens/inHomeScreen/students_list.dart';
+import 'package:school/screens/inHomeScreen/takeattendance.dart';
 
 String medium = 'english';
 String standard = 'kg1';

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:school/screens/choose.dart';
+import 'package:school/screens/inHomeScreen/choose.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 final _dbRef = FirebaseDatabase.instance;

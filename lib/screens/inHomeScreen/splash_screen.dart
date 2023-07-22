@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:school/screens/choose.dart';
-import 'package:school/screens/home_screen.dart';
+import 'package:school/screens/inHomeScreen/choose.dart';
+import 'package:school/screens/inHomeScreen/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

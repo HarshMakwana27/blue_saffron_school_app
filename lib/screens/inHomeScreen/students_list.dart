@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:school/widgets/student_tile.dart';
-import 'package:school/screens/stepper.dart';
+import 'package:school/screens/inHomeScreen/stepper.dart';
 
 class StudentList extends StatefulWidget {
   const StudentList({

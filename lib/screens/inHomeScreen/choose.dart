@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school/screens/reg_screen.dart';
+import 'package:school/screens/inHomeScreen/reg_screen.dart';
 
 bool? isStudent;
 

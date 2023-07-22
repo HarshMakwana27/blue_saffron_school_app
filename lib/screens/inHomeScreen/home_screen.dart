@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:school/drawer/drawer.dart';
+import 'package:school/screens/inHomeScreen/attendance_list.dart';
 
-import 'package:school/screens/stepper.dart';
+import 'package:school/screens/inHomeScreen/stepper.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -124,6 +125,38 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const Text(
                           'Students list',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => AttendanceList(),
+                    ));
+                  },
+                  child: Card(
+                    surfaceTintColor: Theme.of(context).colorScheme.background,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          width: 55,
+                          height: 55,
+                          child: const Icon(
+                            Icons.list_rounded,
+                            size: 50,
+                          ),
+                        ),
+                        const Text(
+                          'Attendance List',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 10,
