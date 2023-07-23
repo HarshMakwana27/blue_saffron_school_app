@@ -269,7 +269,7 @@ class _KeysListPageState extends State<KeysListPage> {
             ),
           );
         },
-        child: Text("Delete"),
+        child: const Text("Delete"),
       ),
     );
   }

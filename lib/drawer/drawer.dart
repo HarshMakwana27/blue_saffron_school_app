@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 import 'package:school/screens/inDrawer/about.dart';
 import 'package:school/screens/inDrawer/add_student.dart';
-import 'package:school/screens/inHomeScreen/choose.dart';
+
 import 'package:school/screens/inDrawer/gallary_screen.dart';
 import 'package:school/screens/inDrawer/student_keys.dart';
 

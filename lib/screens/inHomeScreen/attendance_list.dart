@@ -5,12 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AttendanceList extends StatelessWidget {
-  AttendanceList({super.key});
+  const AttendanceList({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Attendance List"),
+        title: const Text("Attendance List"),
       ),
       body: Column(
         children: [
@@ -44,7 +44,7 @@ class AttendanceList extends StatelessWidget {
 class ChooseMediumAndStandardScreen extends StatefulWidget {
   final DateTime selectedDate;
 
-  ChooseMediumAndStandardScreen({required this.selectedDate});
+  const ChooseMediumAndStandardScreen({super.key, required this.selectedDate});
 
   @override
   State<ChooseMediumAndStandardScreen> createState() {
@@ -61,19 +61,19 @@ class _ChooseMediumAndStandardScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choose Medium and Standard"),
+        title: const Text("Choose Medium and Standard"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Selected Date: ${DateFormat('yyyyMMdd').format(widget.selectedDate)}",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              "Selected Date: ${DateFormat('dd//MM/yyyy').format(widget.selectedDate)}",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             DropdownButton<String>(
                 value: _selectedMedium,
-                hint: Text('Select Medium'),
+                hint: const Text('Select Medium'),
                 onChanged: (newValue) {
                   setState(() {
                     _selectedMedium = newValue!;

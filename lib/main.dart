@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:school/screens/inHomeScreen/home_screen.dart';
+import 'package:school/screens/inHomeScreen/splash_screen.dart';
 
 import 'firebase_options.dart';
-
-import 'package:school/screens/inHomeScreen/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school/theme/themes.dart';
 
 void main() async {
@@ -24,7 +25,14 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme,
         darkTheme: darkTheme,
-        home: const SplashScreen(),
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const HomeScreen();
+              }
+              return const SplashScreen();
+            }),
         themeMode: ThemeMode.light);
   }
 }

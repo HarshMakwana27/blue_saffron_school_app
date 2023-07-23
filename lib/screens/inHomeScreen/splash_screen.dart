@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:school/screens/inHomeScreen/choose.dart';
-import 'package:school/screens/inHomeScreen/home_screen.dart';
+import 'package:school/screens/auth/choose.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -103,14 +100,7 @@ class BottomPart extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: (ctx) {
-                  return StreamBuilder(
-                      stream: FirebaseAuth.instance.authStateChanges(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return const HomeScreen();
-                        }
-                        return const ChooseCategory();
-                      });
+                  return const ChooseCategory();
                 }));
               },
               style: ElevatedButton.styleFrom(

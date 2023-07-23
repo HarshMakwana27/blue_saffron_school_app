@@ -1,32 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:school/screens/inHomeScreen/choose.dart';
+
+import 'package:school/screens/auth/reg_screen.dart';
+import 'package:school/screens/inHomeScreen/home_screen.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 final _dbRef = FirebaseDatabase.instance;
 
-class TeacherLogin extends StatefulWidget {
-  const TeacherLogin({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<TeacherLogin> createState() => _TeacherLoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _TeacherLoginState extends State<TeacherLogin> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-  bool _isLogin = true;
 
   bool _isLoading = false;
 
   String _email = '';
   String _password = '';
-
-  String _name = '';
-  int? _uid;
-  int? _key;
 
   Future<bool> validateUidAndKey(int uid, int key, bool isStudent) async {
     final userType = isStudent ? 'students' : 'teachers';
@@ -143,9 +141,8 @@ class _TeacherLoginState extends State<TeacherLogin> {
                             await _firebaseAuth.sendPasswordResetEmail(
                                 email: _email);
 
-                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).clearSnackBars();
-                            // ignore: use_build_context_synchronously
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -188,52 +185,10 @@ class _TeacherLoginState extends State<TeacherLogin> {
           _isLoading = true;
         });
 
-        if (_isLogin) {
-          await _firebaseAuth.signInWithEmailAndPassword(
-              email: _email, password: _password);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
-        } else {
-          final isUidAndKeyValid =
-              await validateUidAndKey(_uid!, _key!, isStudent!);
-
-          if (isUidAndKeyValid) {
-            // Proceed with user registration
-            final userCredentials =
-                await _firebaseAuth.createUserWithEmailAndPassword(
-                    email: _email, password: _password);
-
-            if (isStudent!) {
-              await FirebaseFirestore.instance
-                  .collection('parents')
-                  .doc(userCredentials.user!.uid)
-                  .set({
-                'name': _name,
-                'email': _email,
-              });
-            } else {
-              await FirebaseFirestore.instance
-                  .collection('teachers')
-                  .doc(userCredentials.user!.uid)
-                  .set({
-                'name': _name,
-                'email': _email,
-              });
-            }
-            setState(() {
-              _isLoading = false;
-            });
-            // Send email verification to the user's email address
-            // await userCredentials.user!.sendEmailVerification();
-
-            // Save user details in Firestore collection (Optional)
-
-            if (context.mounted) {
-              Navigator.of(context).pop();
-            }
-          }
-        }
+        await _firebaseAuth.signInWithEmailAndPassword(
+            email: _email, password: _password);
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
       } on FirebaseAuthException catch (error) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -263,14 +218,14 @@ class _TeacherLoginState extends State<TeacherLogin> {
               child: Image.asset('assets/images/teacher.png'),
             ),
             Text(
-              _isLogin ? 'Log In' : 'Sign Up',
+              'Log In',
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
                   .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
             ),
             Text(
-              _isLogin ? 'Welcome Back !' : 'Welcome !',
+              'Welcome Back !',
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold),
@@ -328,80 +283,19 @@ class _TeacherLoginState extends State<TeacherLogin> {
                       _password = value!;
                     },
                   ),
-                  if (_isLogin)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                            onPressed: _forgetPassword,
-                            child: const Text(
-                              'Forget Password?',
-                              style: TextStyle(
-                                fontSize: 10,
-                              ),
-                            )),
-                      ],
-                    ),
-                  if (!_isLogin)
-                    TextFormField(
-                      // style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                        icon: Icon(
-                          Icons.person,
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                      ),
-
-                      validator: (value) {
-                        if (value == null ||
-                            value.trim().isEmpty ||
-                            value.length < 4) {
-                          return "Name should be 4 letters long";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _name = value!;
-                      },
-                    ),
-                  if (!_isLogin)
-                    TextFormField(
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      decoration: const InputDecoration(
-                          label: Text('Uid'), icon: Icon(Icons.card_giftcard)),
-                      keyboardType: TextInputType.number,
-                      cursorWidth: 1,
-                      validator: (value) {
-                        if (int.tryParse(value!) == null) {
-                          return 'Must be a number';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _uid = int.tryParse(value!)!;
-                      },
-                    ),
-                  if (!_isLogin)
-                    TextFormField(
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      decoration: const InputDecoration(
-                          label: Text('Key'), icon: Icon(Icons.key)),
-                      keyboardType: TextInputType.number,
-                      cursorWidth: 1,
-                      validator: (value) {
-                        if (int.tryParse(value!) == null) {
-                          return 'Must be a number';
-                        }
-                        if (value.trim().length != 4) {
-                          return 'Must be a 4 digit number';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _key = int.tryParse(value!)!;
-                      },
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          onPressed: _forgetPassword,
+                          child: const Text(
+                            'Forget Password?',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          )),
+                    ],
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -415,17 +309,14 @@ class _TeacherLoginState extends State<TeacherLogin> {
                               foregroundColor:
                                   Theme.of(context).colorScheme.background),
                           onPressed: _onSave,
-                          child:
-                              Text(_isLogin ? 'Log in' : 'Create an Account '),
+                          child: const Text('Log in'),
                         ),
                   TextButton(
                       onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const RegScreen()));
                       },
-                      child: Text(
-                          _isLogin ? 'Create an Account' : 'Log In Instead')),
+                      child: const Text('Create an Account')),
                   const SizedBox(
                     height: 25,
                   ),

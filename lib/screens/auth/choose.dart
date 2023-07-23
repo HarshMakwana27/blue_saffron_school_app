@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school/screens/inHomeScreen/reg_screen.dart';
+import 'package:school/screens/auth/login_screen.dart';
 
 bool? isStudent;
 
@@ -8,7 +8,7 @@ class ChooseCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    // final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +28,7 @@ class ChooseCategory extends StatelessWidget {
                   isStudent = false;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => const TeacherLogin(),
+                      builder: (ctx) => const LoginScreen(),
                     ),
                   );
                 },
@@ -39,14 +39,15 @@ class ChooseCategory extends StatelessWidget {
             ),
             ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.white.withOpacity(0.9),
+                  foregroundColor: Theme.of(context).colorScheme.primary,
                   fixedSize: Size(width * 0.9, 50),
                 ),
                 onPressed: () {
                   isStudent = true;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => const TeacherLogin(),
+                      builder: (ctx) => const LoginScreen(),
                     ),
                   );
                 },
