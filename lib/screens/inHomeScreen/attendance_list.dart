@@ -1,61 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:school/widgets/attendance_tile.dart';
 
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+class Attendancelist extends StatefulWidget {
+  const Attendancelist({super.key});
 
-class AttendanceList extends StatelessWidget {
-  const AttendanceList({super.key});
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Attendance List"),
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 400, // Adjust the height as needed
-            child: SfCalendar(
-              view: CalendarView.month, // Month view
-              initialSelectedDate:
-                  DateTime.now(), // Show today's date as selected
-              onTap: (CalendarTapDetails details) {
-                // Handle date selection
-                if (details.targetElement == CalendarElement.calendarCell) {
-                  DateTime selectedDate = details.date!;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChooseMediumAndStandardScreen(
-                          selectedDate: selectedDate),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+  State<Attendancelist> createState() {
+    return _AttendancelistState();
   }
 }
 
-class ChooseMediumAndStandardScreen extends StatefulWidget {
-  final DateTime selectedDate;
-
-  const ChooseMediumAndStandardScreen({super.key, required this.selectedDate});
-
-  @override
-  State<ChooseMediumAndStandardScreen> createState() {
-    return _ChooseMediumAndStandardScreenState();
-  }
-}
-
-class _ChooseMediumAndStandardScreenState
-    extends State<ChooseMediumAndStandardScreen> {
+class _AttendancelistState extends State<Attendancelist> {
   String _selectedMedium = 'english';
   String _selectedStandard = 'kg1';
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -63,178 +23,300 @@ class _ChooseMediumAndStandardScreenState
       appBar: AppBar(
         title: const Text("Choose Medium and Standard"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Selected Date: ${DateFormat('dd//MM/yyyy').format(widget.selectedDate)}",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-                value: _selectedMedium,
-                hint: const Text('Select Medium'),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedMedium = newValue!;
-                  });
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Selected Month',
+            textAlign: TextAlign.center,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      _selectedDate = pickedDate;
+                    });
+                  }
                 },
-                // Populate the dropdown items with the available mediums
-                items: const [
-                  DropdownMenuItem(
-                    value: 'english',
-                    child: Text('english'),
+                child: Text(
+                  DateFormat('MMMM yyyy').format(_selectedDate),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  DropdownMenuItem(
-                    value: 'gujarati',
-                    child: Text('gujarati'),
-                  ),
-                ]),
-            DropdownButton<String>(
-                value: _selectedStandard,
-                hint: Text('Select Standard'),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedStandard = newValue!;
-                  });
-                },
-                // Populate the dropdown items with the available standards
-                items: const [
-                  DropdownMenuItem(
-                    value: 'kg1',
-                    child: Text('kg1'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'kg2',
-                    child: Text('kg2'),
-                  ),
-                ] // Replace with your actual standards
-
                 ),
-            ElevatedButton(
-              onPressed: () {
-                if (_selectedMedium.isNotEmpty &&
-                    _selectedStandard.isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AttendanceListScreen(
-                        selectedDate: widget.selectedDate,
-                      ),
-                    ),
-                  );
-                } else {
-                  // Show an error message if medium and standard are not selected
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please select Medium and Standard.'),
-                    ),
-                  );
-                }
+              ),
+            ],
+          ),
+          Container(
+            color: Colors.green,
+            height: 0.5,
+            width: 150,
+          ),
+          SizedBox(
+            width: 150,
+            child: DropdownButton<String>(
+              isExpanded: true,
+              alignment: Alignment.center,
+              value: _selectedMedium,
+              hint: const Text('Select Medium'),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedMedium = newValue!;
+                });
               },
-              child: Text('Proceed'),
+              items: const [
+                DropdownMenuItem(
+                  value: 'english',
+                  child: Text('English'),
+                ),
+                DropdownMenuItem(
+                  value: 'gujarati',
+                  child: Text('Gujarati'),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: 150,
+            child: DropdownButton<String>(
+              isExpanded: true,
+              alignment: Alignment.center,
+              value: _selectedStandard,
+              hint: const Text('Select Standard'),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedStandard = newValue!;
+                });
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: 'kg1',
+                  child: Text('KG1'),
+                ),
+                DropdownMenuItem(
+                  value: 'kg2',
+                  child: Text('KG2'),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_selectedMedium.isNotEmpty && _selectedStandard.isNotEmpty) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AttendanceListScreen(
+                      selectedDate: _selectedDate,
+                      selectedMedium: _selectedMedium,
+                      selectedStandard: _selectedStandard,
+                    ),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please select Medium and Standard.'),
+                  ),
+                );
+              }
+            },
+            child: const Text('Proceed'),
+          ),
+        ],
       ),
     );
   }
 }
 
-class AttendanceData {
-  final String uid;
-  bool isPresent;
-
-  AttendanceData({required this.uid, required this.isPresent});
-}
-
 class AttendanceListScreen extends StatefulWidget {
   final DateTime selectedDate;
+  final String selectedMedium;
+  final String selectedStandard;
 
-  AttendanceListScreen({super.key, required this.selectedDate});
+  const AttendanceListScreen(
+      {required this.selectedDate,
+      required this.selectedMedium,
+      required this.selectedStandard,
+      super.key});
 
   @override
-  _AttendanceListScreenState createState() => _AttendanceListScreenState();
+  State<AttendanceListScreen> createState() {
+    return _AttendanceListScreenState();
+  }
 }
 
 class _AttendanceListScreenState extends State<AttendanceListScreen> {
-  List<AttendanceData> attendanceList = [];
+  List<StudentPresentDays> studentPresentDaysList = [];
 
-  @override
-  void initState() {
-    super.initState();
-    fetchAttendanceData();
-  }
-
-  void fetchAttendanceData() async {
+  Future<List<StudentPresentDays>> fetchAttendanceData() async {
     // Implement fetching the attendance data for the selected month from Firestore
     // and calculate the attendance for each student from the 1st day to the last day.
     // Update the attendanceList with the fetched data.
     try {
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('attendance_records')
+          .collection(
+              'attendance_records/${widget.selectedMedium}/${widget.selectedStandard}')
+          .where('date', isGreaterThanOrEqualTo: firstDayOfMonth())
+          .where('date', isLessThanOrEqualTo: lastDayOfMonth())
           .get();
 
-      print(querySnapshot.docs);
+      // Clear the existing studentPresentDaysList
+      studentPresentDaysList.clear();
 
-      // Clear the existing attendanceList
-      attendanceList.clear();
+      // Create a map to store the count of days present for each student
+      Map<String, int> studentDaysPresentCount = {};
 
-      // Iterate through the querySnapshot and update attendanceList
+      // Iterate through the querySnapshot and update studentDaysPresentCount
       for (var document in querySnapshot.docs) {
         var attendanceData = document.data();
         attendanceData['attendance'].forEach((uid, isPresent) {
-          attendanceList.add(AttendanceData(uid: uid, isPresent: isPresent));
-          print(attendanceList);
+          if (isPresent) {
+            studentDaysPresentCount[uid] =
+                (studentDaysPresentCount[uid] ?? 0) + 1;
+          }
         });
       }
 
+      // Convert the map to a list of StudentPresentDays objects
+      studentPresentDaysList = studentDaysPresentCount.entries
+          .map((entry) =>
+              StudentPresentDays(uid: entry.key, presentDays: entry.value))
+          .toList();
+
       // Set the state to update the UI with the fetched data
-      setState(() {});
     } catch (e) {
-      print('Error fetching attendance data: $e');
+      Center(
+        child: Text(e.toString()),
+      );
     }
+    return studentPresentDaysList;
   }
 
-  DateTime firstDayOfMonth() {
-    var year = int.parse(widget.selectedDate.toString().substring(0, 4));
-    var month = int.parse(widget.selectedDate.toString().substring(4, 6));
-    return DateTime(year, month, 1);
+  String firstDayOfMonth() {
+    var year = DateFormat('yyyy').format(widget.selectedDate);
+    var month = DateFormat('MM').format(widget.selectedDate);
+    return '$year${month}01';
   }
 
-  DateTime lastDayOfMonth() {
-    var year = int.parse(widget.selectedDate.toString().substring(0, 4));
-    var month = int.parse(widget.selectedDate.toString().substring(4, 6));
-    var lastDay = DateTime(year, month + 1, 0);
-    return DateTime(lastDay.year, lastDay.month, lastDay.day);
-  }
-
-  int calculateDaysPresent(String uid) {
-    return attendanceList
-        .where((data) => data.uid == uid && data.isPresent)
-        .length;
+  String lastDayOfMonth() {
+    var year = DateFormat('yyyy').format(widget.selectedDate);
+    var month = DateFormat('MM').format(widget.selectedDate);
+    return '$year${month}31';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            'Attendance for ${DateFormat('MMMM yyyy').format(widget.selectedDate)}'),
+        title: const Text('Attendance List'),
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: attendanceList.length,
-          itemBuilder: (context, index) {
-            final attendanceData = attendanceList[index];
-            return ListTile(
-              title: Text('Student UID: ${attendanceData.uid}'),
-              subtitle: Text(
-                  'Days Present: ${calculateDaysPresent(attendanceData.uid)}'),
+      body: FutureBuilder(
+        future: fetchAttendanceData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ),
+          }
+          if (snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('No data'),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '${widget.selectedMedium.capitalize()} Medium',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const Spacer(),
+                            Text(
+                              '${widget.selectedStandard.capitalize()} Std',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Number of days present in',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        Text(
+                          DateFormat('MMMM yyyy').format(widget.selectedDate),
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: studentPresentDaysList.length,
+                      itemBuilder: (context, index) {
+                        final studentPresentDays =
+                            studentPresentDaysList[index];
+                        return ListTile(
+                          title: Text(
+                            'Student UID: ${studentPresentDays.uid}',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          subtitle: Text(
+                            'Days Present: ${studentPresentDays.presentDays}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
+}
+
+class StudentPresentDays {
+  StudentPresentDays({required this.uid, required this.presentDays});
+  final String uid;
+  final int presentDays;
 }

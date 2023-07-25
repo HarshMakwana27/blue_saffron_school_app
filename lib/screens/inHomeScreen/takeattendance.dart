@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,8 +32,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
   void _onSave() async {
     Map<String, dynamic> attendanceValues = {
       'date': formattedDate,
-      'medium': medium,
-      'standard': standard,
       'attendance': {},
     };
 
@@ -41,16 +41,80 @@ class _TakeAttendanceState extends State<TakeAttendance> {
 
     // Save the attendance data to Firestore
     try {
-      await FirebaseFirestore.instance
-          .collection('attendance_records')
-          .doc()
-          .set(attendanceValues);
-      //  .add(attendanceValues);
+      var docRef = FirebaseFirestore.instance
+          .collection('attendance_records/$medium/$standard')
+          .doc(formattedDate);
 
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pop();
+      var existingDoc = await docRef.get();
+      if (existingDoc.exists) {
+        // Show a warning dialog with the option to override existing attendance
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Attendance Already Exists'),
+              content: const Text(
+                  'Attendance for this date already exists. Do you want to override it?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // Override the existing attendance data
+                    docRef.set(attendanceValues).then((_) {
+                      // Show a success message after successful override
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Attendance overridden successfully.'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      // Navigate back to the previous screen
+                      Navigator.of(context).pop();
+                    }).catchError((error) {
+                      // Show an error message if there was an error while overriding attendance
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error overriding attendance: $error'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    });
+                  },
+                  child: const Text('Override'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Just close the dialog and return to the previous screen
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Add the attendance data if it doesn't exist
+        await docRef.set(attendanceValues);
+
+        // Show a success message after successful attendance
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Attendance saved successfully.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Navigate back to the previous screen
+        Navigator.of(context).pop();
+      }
     } on FirebaseException catch (e) {
-      Center(child: Text('$e'));
+      // Show an error message if there was an error while saving attendance
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving attendance: ${e.message}'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -70,7 +134,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                'Today\'s Date: $formattedDate',
+                'Today\'s Date: ${DateFormat('dd MMMM yyyy').format(DateTime.now())}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

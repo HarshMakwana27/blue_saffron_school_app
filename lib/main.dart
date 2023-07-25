@@ -31,6 +31,9 @@ class MainApp extends StatelessWidget {
               if (snapshot.hasData) {
                 return const HomeScreen();
               }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SplashScreen2();
+              }
               return const SplashScreen();
             }),
         themeMode: ThemeMode.light);
