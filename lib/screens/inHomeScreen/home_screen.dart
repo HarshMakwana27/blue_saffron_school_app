@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:school/drawer/drawer.dart';
 import 'package:school/screens/inHomeScreen/attendance_list.dart';
 
 import 'package:school/screens/inHomeScreen/stepper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final date = DateFormat('dd').format(DateTime.now());
+    final month = DateFormat('MMMM').format(DateTime.now());
+    final day = DateFormat('EEEEEEEEEE').format(DateTime.now());
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -24,28 +29,39 @@ class HomeScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+                bottomLeft: Radius.circular(35),
+                bottomRight: Radius.circular(35),
               ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  '25',
-                  style: TextStyle(fontSize: 40, color: Colors.white),
+                Text(
+                  date,
+                  style: const TextStyle(fontSize: 40, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                const Text(
-                  'August',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
+                Text(
+                  month,
+                  style: const TextStyle(fontSize: 15, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 30),
-                const SizedBox(height: 100),
+                const SizedBox(
+                  height: 100,
+                ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [],
+                ),
+                Text(
+                  day,
+                  style: GoogleFonts.aboreto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      wordSpacing: 3,
+                      letterSpacing: 1.5),
+                  textAlign: TextAlign.center,
                 ),
                 Text(
                   'Blue Saffron School',

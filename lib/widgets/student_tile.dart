@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school/screens/inHomeScreen/student_info.dart';
 
 extension StringExtensions on String {
   String capitalize() {
@@ -14,7 +15,10 @@ class StudentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const StudentInfo()));
+      },
       leading: CircleAvatar(
         backgroundColor:
             student['gender'] == 'male' ? Colors.lightBlue : Colors.pinkAccent,
