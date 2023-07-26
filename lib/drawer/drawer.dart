@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
+import 'package:school/screens/auth/choose.dart';
 import 'package:school/screens/inDrawer/about.dart';
 import 'package:school/screens/inDrawer/add_student.dart';
 
 import 'package:school/screens/inDrawer/gallary_screen.dart';
 import 'package:school/screens/inDrawer/student_keys.dart';
+import 'package:school/screens/inHomeScreen/home_screen.dart';
+import 'package:school/widgets/attendance_tile.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -49,24 +52,24 @@ class MainDrawer extends StatelessWidget {
                       radius: width * 0.1,
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     ),
-                    const Text(
-                      'Nehal Gohil',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    Text(
+                      name!.capitalize(),
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
                     ),
-                    const Text(
-                      '(Student)',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    Text(
+                      isStudent! ? '(Parent)' : '(Teacher)',
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          const DrawerTile('Add new Student', Icons.add, AddStudent()),
+          if (!isStudent!)
+            const DrawerTile('Add new Student', Icons.add, AddStudent()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
-          const DrawerTile('Keys', Icons.key, StudentKey()),
-          const SizedBox(),
+          if (!isStudent!) const DrawerTile('Keys', Icons.key, StudentKey()),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

@@ -126,19 +126,23 @@ class _RegScreenState extends State<RegScreen> {
 
         if (isStudent!) {
           await FirebaseFirestore.instance
-              .collection('parents')
+              .collection('users')
               .doc(userCredentials.user!.uid)
               .set({
             'name': _name,
             'email': _email,
+            'uid': _uid,
+            'isStudent': true
           });
         } else {
           await FirebaseFirestore.instance
-              .collection('teachers')
+              .collection('users')
               .doc(userCredentials.user!.uid)
               .set({
             'name': _name,
             'email': _email,
+            'uid': _uid,
+            'isStudent': false
           });
         }
         setState(() {
