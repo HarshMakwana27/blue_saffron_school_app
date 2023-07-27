@@ -290,6 +290,39 @@ Widget future = FutureBuilder(
                 ),
               ),
             ),
+          if (isStudent!)
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => const StudentInfo(),
+                ));
+              },
+              child: Card(
+                surfaceTintColor: Theme.of(context).colorScheme.background,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 55,
+                      height: 55,
+                      child: const Icon(
+                        Icons.pie_chart_rounded,
+                        size: 50,
+                      ),
+                    ),
+                    const Text(
+                      "Performance",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
@@ -339,12 +372,12 @@ Widget future = FutureBuilder(
                       width: 55,
                       height: 55,
                       child: const Icon(
-                        Icons.account_box_rounded,
+                        CupertinoIcons.profile_circled,
                         size: 50,
                       ),
                     ),
                     const Text(
-                      "My Student",
+                      "Profile",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 10,

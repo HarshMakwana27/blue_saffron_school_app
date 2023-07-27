@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school/screens/inHomeScreen/student_info.dart';
 
@@ -20,8 +21,10 @@ class StudentTile extends StatelessWidget {
             .push(MaterialPageRoute(builder: (context) => const StudentInfo()));
       },
       leading: CircleAvatar(
-        backgroundColor:
-            student['gender'] == 'male' ? Colors.lightBlue : Colors.pinkAccent,
+        radius: 20,
+        foregroundImage: student['gender'] == 'male'
+            ? const AssetImage('assets/images/profile.png')
+            : const AssetImage('assets/images/profilegirl.png'),
       ),
       title: Text(
         student['name'].toString().capitalize(),
@@ -31,8 +34,8 @@ class StudentTile extends StatelessWidget {
         children: [Text('Uid : ${student['uid'].toString().capitalize()}')],
       ),
       trailing: const Icon(
-        Icons.abc,
-        size: 40,
+        CupertinoIcons.arrow_right,
+        size: 20,
       ),
     );
   }
