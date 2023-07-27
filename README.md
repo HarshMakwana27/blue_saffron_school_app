@@ -96,7 +96,7 @@ Blue Saffron School App is a feature-rich mobile application built using Flutter
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/4a683378-7824-43a8-a92a-81d500443642" alt="list" height="450">
 
 
-## Getting Started
+## Getting Started(for contributors)
 
 ### Prerequisites
 
@@ -121,4 +121,9 @@ Make sure you have set up your Firebase project and added the necessary configur
 
 - now create account with that and after this you will be able to manage keys, in keys section
 
+## Contributing
+We welcome contributions to improve the Blue Saffron School App. Feel free to open issues and submit pull requests!
+
+### License
+This project is licensed under MIT Licence.
 
