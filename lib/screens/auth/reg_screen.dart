@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:school/main.dart';
-import 'package:school/screens/auth/choose.dart';
+
 import 'package:school/screens/auth/login_screen.dart';
 import 'package:school/screens/inHomeScreen/home_screen.dart';
 
@@ -88,7 +88,7 @@ class _RegScreenState extends State<RegScreen> {
         });
 
         final isUidAndKeyValid =
-            await validateUidAndKey(_uid!, _key!, widget.isStudent!);
+            await validateUidAndKey(_uid!, _key!, widget.isStudent);
 
         if (isUidAndKeyValid) {
           setState(() {
@@ -123,7 +123,7 @@ class _RegScreenState extends State<RegScreen> {
         final userCredentials = await kfirebaseauth
             .createUserWithEmailAndPassword(email: _email, password: _password);
 
-        if (widget.isStudent!) {
+        if (widget.isStudent) {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(userCredentials.user!.uid)
@@ -292,9 +292,8 @@ class _RegScreenState extends State<RegScreen> {
                     TextFormField(
                       style: Theme.of(context).textTheme.bodyLarge,
                       decoration: InputDecoration(
-                          label: Text(widget.isStudent!
-                              ? 'Student Key'
-                              : 'Teacher Key'),
+                          label: Text(
+                              widget.isStudent ? 'Student Key' : 'Teacher Key'),
                           icon: const Icon(Icons.key)),
                       keyboardType: TextInputType.number,
                       cursorWidth: 1,
