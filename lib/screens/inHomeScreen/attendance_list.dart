@@ -253,13 +253,11 @@ class _AttendanceListScreenState extends State<AttendanceListScreen> {
                         Row(
                           children: [
                             Text(
-                              '${widget.selectedMedium.capitalize()} Medium',
-                              style: Theme.of(context).textTheme.titleLarge,
+                              widget.selectedMedium.capitalize(),
                             ),
-                            const Spacer(),
+                            const Icon(Icons.arrow_right),
                             Text(
-                              '${widget.selectedStandard.capitalize()} Std',
-                              style: Theme.of(context).textTheme.titleLarge,
+                              widget.selectedStandard.capitalize(),
                             ),
                           ],
                         ),

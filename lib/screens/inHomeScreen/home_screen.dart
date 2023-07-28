@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,9 +10,11 @@ import 'package:school/main.dart';
 
 import 'package:school/screens/inHomeScreen/announce.dart';
 import 'package:school/screens/inHomeScreen/attendance_list.dart';
+import 'package:school/screens/inHomeScreen/contact.dart';
 
 import 'package:school/screens/inHomeScreen/stepper.dart';
 import 'package:school/screens/inHomeScreen/student_info.dart';
+import 'package:school/widgets/construction.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,13 +26,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final date = DateFormat('dd').format(DateTime.now());
   final month = DateFormat('MMMM').format(DateTime.now());
-  final day = DateFormat('EEEEEEEEEE').format(DateTime.now());
+  final day = DateFormat('EEEE').format(DateTime.now());
 
   final firebaseAuthUid = kfirebaseauth.currentUser!.uid;
 
-  int uid = 0;
-  String name = 'username';
-  bool isStudent = true;
+  int? uid;
+  String? name;
+  bool? isStudent;
 
   late Future<int> flag;
 
@@ -41,11 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
           .collection('users')
           .doc(firebaseAuthUid)
           .get();
-      setState(() {
-        isStudent = userSnapshot.data()!['isStudent'];
-        uid = userSnapshot.data()!['uid'];
-        name = userSnapshot.data()!['name'];
-      });
+
+      isStudent = userSnapshot.data()!['isStudent'];
+      uid = userSnapshot.data()!['uid'];
+      name = userSnapshot.data()!['name'];
 
       return 0;
     } catch (error) {
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.only(top: 5, bottom: 30),
           height: 290,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
@@ -80,19 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                date,
-                style: const TextStyle(fontSize: 40, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                month,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 100,
-              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [],
@@ -111,9 +98,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Text(
-                'Studying Day',
+                date,
+                style: const TextStyle(fontSize: 40, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                month,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              const Spacer(),
+              Text(
+                day == 'Sunday' ? 'HOLIDAY' : 'School Day',
                 style: GoogleFonts.aboreto(
-                    fontSize: 20,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     wordSpacing: 3,
@@ -145,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10),
                       children: [
-                        if (!isStudent)
+                        if (!isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -181,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        if (!isStudent)
+                        if (!isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -215,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        if (!isStudent)
+                        if (!isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -249,11 +247,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        if (isStudent)
+                        if (isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const Attendancelist(),
+                                builder: (ctx) => const Construction(),
                               ));
                             },
                             child: Card(
@@ -263,16 +261,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(5),
-                                    width: 55,
-                                    height: 55,
-                                    child: const Icon(
-                                      Icons.bar_chart_sharp,
-                                      size: 50,
-                                    ),
-                                  ),
+                                      padding: const EdgeInsets.all(5),
+                                      width: 55,
+                                      height: 55,
+                                      child: Image.asset(
+                                        'assets/images/students.png',
+                                        width: 50,
+                                      )),
                                   const Text(
-                                    "Student's attendance",
+                                    "Check attendance",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 10,
@@ -283,11 +280,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        if (isStudent)
+                        if (isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const StudentInfo(),
+                                builder: (ctx) => const Construction(),
                               ));
                             },
                             child: Card(
@@ -297,14 +294,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(5),
-                                    width: 55,
-                                    height: 55,
-                                    child: const Icon(
-                                      Icons.pie_chart_rounded,
-                                      size: 50,
-                                    ),
-                                  ),
+                                      padding: const EdgeInsets.all(5),
+                                      width: 55,
+                                      height: 55,
+                                      child: Image.asset(
+                                          'assets/images/performance.png')),
                                   const Text(
                                     "Performance",
                                     textAlign: TextAlign.center,
@@ -333,9 +327,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.all(5),
                                   width: 55,
                                   height: 55,
-                                  child: const Icon(
-                                    CupertinoIcons.group,
-                                    size: 50,
+                                  child: Image.asset(
+                                    'assets/images/announcement.png',
                                   ),
                                 ),
                                 const Text(
@@ -350,7 +343,40 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        if (isStudent)
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => Contact(isStudent: isStudent!),
+                            ));
+                          },
+                          child: Card(
+                            surfaceTintColor:
+                                Theme.of(context).colorScheme.background,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(5),
+                                  width: 55,
+                                  height: 55,
+                                  child: Image.asset(
+                                    'assets/images/contact.png',
+                                  ),
+                                ),
+                                const Text(
+                                  "Contact",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (isStudent!)
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -367,9 +393,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: const EdgeInsets.all(5),
                                     width: 55,
                                     height: 55,
-                                    child: const Icon(
-                                      CupertinoIcons.profile_circled,
-                                      size: 50,
+                                    child: Image.asset(
+                                      'assets/images/id.png',
+                                      width: 50,
+                                      height: 50,
                                     ),
                                   ),
                                   const Text(
@@ -389,11 +416,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 }))
       ]),
-      drawer: MainDrawer(
-        isStudent: isStudent,
-        name: name,
-        uid: uid,
-      ),
+      drawer: FutureBuilder<Object>(
+          future: flag,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox();
+            } else {
+              return MainDrawer(
+                isStudent: isStudent!,
+                name: name!,
+                uid: uid!,
+              );
+            }
+          }),
     );
   }
 }

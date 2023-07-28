@@ -51,6 +51,9 @@ dependencies:
   syncfusion_flutter_calendar: ^22.1.39
   intl: ^0.18.1
   firebase_messaging: ^14.6.5
+  whatsapp: ^0.0.1
+  flutter_phone_direct_caller: ^2.1.1
+  url_launcher: ^6.1.12
 
 dev_dependencies:
   flutter_test:

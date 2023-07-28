@@ -12,6 +12,7 @@ import 'package:school/screens/inDrawer/student_keys.dart';
 
 import 'package:school/screens/inHomeScreen/splash_screen.dart';
 import 'package:school/widgets/attendance_tile.dart';
+import 'package:school/widgets/construction.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer(
@@ -80,7 +81,8 @@ class MainDrawer extends StatelessWidget {
           if (!isStudent)
             const DrawerTile('Add new Student', Icons.add, AddStudent()),
           if (isStudent)
-            const DrawerTile('Contact info', Icons.contact_page, AddStudent()),
+            const DrawerTile(
+                'Contact info', Icons.contact_page, Construction()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
           if (!isStudent) const DrawerTile('Keys', Icons.key, StudentKey()),
@@ -109,7 +111,7 @@ class MainDrawer extends StatelessWidget {
                   ),
                 );
               } catch (e) {
-                print('Error occurred during sign-out: $e');
+                rethrow;
               }
             },
           ),
