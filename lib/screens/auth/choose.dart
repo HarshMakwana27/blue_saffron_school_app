@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:school/screens/auth/login_screen.dart';
 
-bool? isStudent;
+import 'package:school/screens/auth/reg_screen.dart';
 
 class ChooseCategory extends StatelessWidget {
   const ChooseCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
+    bool? isStudent;
     // final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -28,7 +28,9 @@ class ChooseCategory extends StatelessWidget {
                   isStudent = false;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => const LoginScreen(),
+                      builder: (ctx) => RegScreen(
+                        isStudent: isStudent!,
+                      ),
                     ),
                   );
                 },
@@ -47,7 +49,9 @@ class ChooseCategory extends StatelessWidget {
                   isStudent = true;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => const LoginScreen(),
+                      builder: (ctx) => RegScreen(
+                        isStudent: isStudent!,
+                      ),
                     ),
                   );
                 },

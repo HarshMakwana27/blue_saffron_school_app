@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:school/screens/auth/choose.dart';
+import 'package:school/screens/auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -100,7 +100,7 @@ class BottomPart extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: (ctx) {
-                  return const ChooseCategory();
+                  return const LoginScreen();
                 }));
               },
               style: ElevatedButton.styleFrom(

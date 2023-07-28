@@ -3,12 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:school/main.dart';
+import 'package:school/screens/auth/choose.dart';
 
-import 'package:school/screens/auth/reg_screen.dart';
 import 'package:school/screens/inHomeScreen/home_screen.dart';
-
-final _firebaseAuth = FirebaseAuth.instance;
-final _dbRef = FirebaseDatabase.instance;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       // Fetch the user data from the database based on the entered UID
-      final dataSnapshot = await _dbRef.ref('$userType/$uid').once();
+      final dataSnapshot = await kdbref.ref('$userType/$uid').once();
       final userData = dataSnapshot.snapshot.value;
 
       if (userData != null && userData is Map<dynamic, dynamic>) {
@@ -138,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.of(context).pop(); // Close the bottom sheet
 
                           try {
-                            await _firebaseAuth.sendPasswordResetEmail(
+                            await kfirebaseauth.sendPasswordResetEmail(
                                 email: _email);
 
                             ScaffoldMessenger.of(context).clearSnackBars();
@@ -185,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _isLoading = true;
         });
 
-        await _firebaseAuth.signInWithEmailAndPassword(
+        await kfirebaseauth.signInWithEmailAndPassword(
             email: _email, password: _password);
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const HomeScreen()));
@@ -314,7 +312,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const RegScreen()));
+                            builder: (context) => const ChooseCategory()));
                       },
                       child: const Text('Create an Account')),
                   const SizedBox(

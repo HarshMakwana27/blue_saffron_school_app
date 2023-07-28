@@ -1,18 +1,30 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
-import 'package:school/screens/auth/choose.dart';
+
 import 'package:school/screens/inDrawer/about.dart';
 import 'package:school/screens/inDrawer/add_student.dart';
 
 import 'package:school/screens/inDrawer/gallary_screen.dart';
 import 'package:school/screens/inDrawer/student_keys.dart';
-import 'package:school/screens/inHomeScreen/home_screen.dart';
+
+import 'package:school/screens/inHomeScreen/splash_screen.dart';
 import 'package:school/widgets/attendance_tile.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
+  const MainDrawer(
+      {super.key,
+      required this.isStudent,
+      required this.name,
+      required this.uid});
 
+  final int uid;
+
+  final String name;
+
+  final bool isStudent;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -53,11 +65,11 @@ class MainDrawer extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     ),
                     Text(
-                      name!.capitalize(),
+                      name.capitalize(),
                       style: const TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     Text(
-                      isStudent! ? '(Parent)' : '(Teacher)',
+                      isStudent ? '(Parent)' : '(Teacher)',
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
@@ -65,13 +77,13 @@ class MainDrawer extends StatelessWidget {
               ],
             ),
           ),
-          if (!isStudent!)
+          if (!isStudent)
             const DrawerTile('Add new Student', Icons.add, AddStudent()),
-          if (isStudent!)
+          if (isStudent)
             const DrawerTile('Contact info', Icons.contact_page, AddStudent()),
           const DrawerTile('Gallary', Icons.image, GallaryScreen()),
           const DrawerTile('About', Icons.info, AboutScreen()),
-          if (!isStudent!) const DrawerTile('Keys', Icons.key, StudentKey()),
+          if (!isStudent) const DrawerTile('Keys', Icons.key, StudentKey()),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -86,8 +98,19 @@ class MainDrawer extends StatelessWidget {
               style: TextStyle(
                   color: Theme.of(context).colorScheme.primary, fontSize: 18),
             ),
-            onTap: () {
-              FirebaseAuth.instance.signOut();
+            onTap: () async {
+              try {
+                await FirebaseAuth.instance.signOut();
+                // After sign-out, navigate back to the login screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SplashScreen(),
+                  ),
+                );
+              } catch (e) {
+                print('Error occurred during sign-out: $e');
+              }
             },
           ),
           const Spacer(),

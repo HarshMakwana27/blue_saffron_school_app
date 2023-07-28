@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:school/main.dart';
 import 'package:school/screens/auth/choose.dart';
 import 'package:school/screens/auth/login_screen.dart';
 import 'package:school/screens/inHomeScreen/home_screen.dart';
 
-final _firebaseAuth = FirebaseAuth.instance;
-final _dbRef = FirebaseDatabase.instance;
-
 class RegScreen extends StatefulWidget {
-  const RegScreen({super.key});
+  const RegScreen({super.key, required this.isStudent});
+  final bool isStudent;
 
   @override
   State<RegScreen> createState() => _RegScreenState();
@@ -35,7 +34,7 @@ class _RegScreenState extends State<RegScreen> {
 
     try {
       // Fetch the user data from the database based on the entered UID
-      final dataSnapshot = await _dbRef.ref('$userType/$uid').once();
+      final dataSnapshot = await kdbref.ref('$userType/$uid').once();
       final userData = dataSnapshot.snapshot.value;
 
       if (userData != null && userData is Map<dynamic, dynamic>) {
@@ -89,7 +88,7 @@ class _RegScreenState extends State<RegScreen> {
         });
 
         final isUidAndKeyValid =
-            await validateUidAndKey(_uid!, _key!, isStudent!);
+            await validateUidAndKey(_uid!, _key!, widget.isStudent!);
 
         if (isUidAndKeyValid) {
           setState(() {
@@ -121,10 +120,10 @@ class _RegScreenState extends State<RegScreen> {
         });
 
         // Proceed with user registration
-        final userCredentials = await _firebaseAuth
+        final userCredentials = await kfirebaseauth
             .createUserWithEmailAndPassword(email: _email, password: _password);
 
-        if (isStudent!) {
+        if (widget.isStudent!) {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(userCredentials.user!.uid)
@@ -293,8 +292,9 @@ class _RegScreenState extends State<RegScreen> {
                     TextFormField(
                       style: Theme.of(context).textTheme.bodyLarge,
                       decoration: InputDecoration(
-                          label:
-                              Text(isStudent! ? 'Student Key' : 'Teacher Key'),
+                          label: Text(widget.isStudent!
+                              ? 'Student Key'
+                              : 'Teacher Key'),
                           icon: const Icon(Icons.key)),
                       keyboardType: TextInputType.number,
                       cursorWidth: 1,
