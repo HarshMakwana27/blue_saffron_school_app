@@ -67,8 +67,9 @@ Blue Saffron School App is a feature-rich mobile application built using Flutter
 
 - Show different icons/buttons based on the user's role (teacher or student).
 #### As a teacher
+
 - Teachers can access features like take attendance, create announcement, student's list, messaging,view attendance,add a new student,  etc.
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/ac9adcad-c5e1-4f0b-8f90-479bc9928cdd" alt="Create" height="450">
+<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/04211a12-6eb2-4c97-98d9-4807838938ec" alt="Create" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/222c2d88-b6c5-42a1-8975-e334bb0c32da" alt="Create" height="450">
 
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/e036c5ee-c492-4ff8-a006-a1325999c247" alt="attlist" height="450">
@@ -78,6 +79,7 @@ Blue Saffron School App is a feature-rich mobile application built using Flutter
 
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/32f60fac-a83e-4b1d-9a84-1fa56064e3fd" alt="choose" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/ace8f9e8-d3b9-4f89-8247-0bdc8afac5eb" alt="picker" height="450">
+<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/ff42dce1-07ef-4618-9cca-d2a3aae1da9b" alt="list" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/636dbd3e-f146-4001-96be-4358f37eadcb" alt="attlist" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/33ff04bd-7c4a-4b27-b991-a98be18fef04" alt="attlist" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/d0bb725b-9d20-4e32-9a85-eed175637b00" alt="list" height="450">
@@ -91,9 +93,13 @@ Blue Saffron School App is a feature-rich mobile application built using Flutter
 
 #### As a Parent
 - Parent can view their child's attendance, results, and send messages to teachers.
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/507faaeb-fc01-4d1e-8d62-a398ccba2cf4" alt="list" height="450">
+<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/a419fc4f-5b6c-4a42-aaee-55a66ef89411" alt="list" height="450">
+
 
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/4a683378-7824-43a8-a92a-81d500443642" alt="list" height="450">
+
+<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/4746ab84-caff-49dc-8feb-6549210e1749" alt="list" height="450">
+<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/ff42dce1-07ef-4618-9cca-d2a3aae1da9b" alt="list" height="450">
 
 
 ## Getting Started(for contributors)
