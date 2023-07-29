@@ -11,9 +11,10 @@ import 'package:school/main.dart';
 import 'package:school/screens/inHomeScreen/announce.dart';
 import 'package:school/screens/inHomeScreen/attendance_list.dart';
 import 'package:school/screens/inHomeScreen/contact.dart';
+import 'package:school/screens/inHomeScreen/medstdInfo.dart';
 
 import 'package:school/screens/inHomeScreen/stepper.dart';
-import 'package:school/screens/inHomeScreen/student_info.dart';
+
 import 'package:school/widgets/construction.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -251,7 +252,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const Construction(),
+                                builder: (ctx) => MedStdforInfo(
+                                    uid: uid!, forAttendance: true),
                               ));
                             },
                             child: Card(
@@ -382,6 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (ctx) => MedStdforInfo(
                                   uid: uid!,
+                                  forAttendance: false,
                                 ),
                               ));
                             },

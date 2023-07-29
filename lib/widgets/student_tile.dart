@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school/screens/inHomeScreen/student_info.dart';
@@ -44,13 +46,16 @@ class StudentTile extends StatelessWidget {
 
   Future<void> _performDelete() async {
     try {
+      String imageUrl = student['imageurl'];
+
+      await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+
       final DocumentReference documentRef = FirebaseFirestore.instance
           .collection('students')
           .doc('${student['medium']}/${student['standard']}/${student['uid']}');
       await documentRef.delete();
-      print('Document deleted successfully');
     } catch (e) {
-      print('Error deleting document: $e');
+      rethrow;
     }
   }
 
@@ -66,12 +71,7 @@ class StudentTile extends StatelessWidget {
                   studentData: student,
                 )));
       },
-      leading: CircleAvatar(
-        radius: 20,
-        foregroundImage: student['gender'] == 'male'
-            ? const AssetImage('assets/images/profile.png')
-            : const AssetImage('assets/images/profilegirl.png'),
-      ),
+      leading: Image.network(student['imageurl']),
       title: Text(
         student['name'].toString().capitalize(),
         style: Theme.of(context).textTheme.titleLarge,

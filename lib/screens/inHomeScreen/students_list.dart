@@ -54,7 +54,9 @@ class _StudentListState extends State<StudentList> {
 
                   final loadedMessage =
                       snapshot.data?.docs ?? []; // Safely handle null value
-
+                  if (loadedMessage.isEmpty) {
+                    return const Center(child: Text("No data"));
+                  }
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: loadedMessage.length,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:school/screens/inHomeScreen/student_attendance.dart';
 import 'package:school/widgets/attendance_tile.dart';
 
 class Attendancelist extends StatefulWidget {
@@ -286,11 +288,24 @@ class _AttendanceListScreenState extends State<AttendanceListScreen> {
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
+                      reverse: true,
                       itemCount: studentPresentDaysList.length,
                       itemBuilder: (context, index) {
                         final studentPresentDays =
                             studentPresentDaysList[index];
                         return ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    StudentAttendanceListScreen(
+                                  studentUID: studentPresentDays.uid,
+                                  selectedMedium: widget.selectedMedium,
+                                  selectedStandard: widget.selectedStandard,
+                                ),
+                              ),
+                            );
+                          },
                           title: Text(
                             'Student UID: ${studentPresentDays.uid}',
                             style: Theme.of(context).textTheme.bodyLarge,

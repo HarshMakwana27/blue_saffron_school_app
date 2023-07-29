@@ -161,6 +161,10 @@ class _TakeAttendanceState extends State<TakeAttendance> {
                     var loadedMessage =
                         snapshot.data?.docs ?? []; // Safely handle null value
 
+                    if (loadedMessage.isEmpty) {
+                      return const Center(child: Text('No students'));
+                    }
+
                     attendanceList = loadedMessage
                         .map((student) => AttendanceData(
                               uid: (student['uid']
