@@ -17,8 +17,10 @@ class StudentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const StudentInfo()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => StudentInfo(
+                  studentData: student,
+                )));
       },
       leading: CircleAvatar(
         radius: 20,

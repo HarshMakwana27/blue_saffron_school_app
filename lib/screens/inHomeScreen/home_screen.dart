@@ -380,7 +380,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const StudentInfo(),
+                                builder: (ctx) => MedStdforInfo(
+                                  uid: uid!,
+                                ),
                               ));
                             },
                             child: Card(

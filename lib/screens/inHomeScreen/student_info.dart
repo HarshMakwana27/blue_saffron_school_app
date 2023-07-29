@@ -1,7 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:school/widgets/attendance_tile.dart';
 
 class StudentInfo extends StatelessWidget {
-  const StudentInfo({super.key});
+  final Map<String, dynamic> studentData;
+  const StudentInfo({
+    required this.studentData,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +54,11 @@ class StudentInfo extends StatelessWidget {
                       height: height * 0.086,
                     ),
                     Text(
-                      'Harsh Makwana',
+                      studentData['name'].toString().capitalize(),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      '(Junior kg)',
+                      studentData['standard'],
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Container(
@@ -61,9 +69,9 @@ class StudentInfo extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Icon(
-                          Icons.call,
-                          size: 30,
+                        Text(
+                          '${studentData['uid']}',
+                          textAlign: TextAlign.center,
                         ),
                         Container(
                           //margin: const EdgeInsets.symmetric(vertical: 15),
@@ -71,9 +79,9 @@ class StudentInfo extends StatelessWidget {
                           width: .1,
                           height: 40,
                         ),
-                        const Icon(
-                          Icons.mail_outline,
-                          size: 35,
+                        Text(
+                          '${studentData['medium'].toString().capitalize()} \n Medium',
+                          textAlign: TextAlign.center,
                         ),
                         Container(
                           //margin: const EdgeInsets.symmetric(vertical: 15),
@@ -81,7 +89,7 @@ class StudentInfo extends StatelessWidget {
                           width: 0.1,
                           height: 40,
                         ),
-                        const Icon(Icons.whatshot)
+                        Text(studentData['gender'].toString().capitalize())
                       ],
                     )
                   ],
@@ -89,15 +97,165 @@ class StudentInfo extends StatelessWidget {
               ),
             ),
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 50,
             backgroundColor: Colors.grey,
-            backgroundImage: NetworkImage(
-                'https://img.freepik.com/free-photo/smiley-boy-holding-stack-books_23-2148414545.jpg'),
+            foregroundImage: studentData['gender'] == 'male'
+                ? const AssetImage('assets/images/profile.png')
+                : const AssetImage('assets/images/profilegirl.png'),
           ),
         ],
       ),
       backgroundColor: Colors.white.withOpacity(0.9),
+    );
+  }
+}
+
+class MedStdforInfo extends StatefulWidget {
+  const MedStdforInfo({super.key, required this.uid});
+
+  final int uid;
+
+  @override
+  State<MedStdforInfo> createState() => _MedStdforInfoState();
+}
+
+class _MedStdforInfoState extends State<MedStdforInfo> {
+  String selectedMedium = 'english';
+  String selectedStandard = 'kg1';
+
+  Future<void> searchStudentData(int uid) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> studentDoc = await FirebaseFirestore
+          .instance
+          .collection('students')
+          .doc(
+              selectedMedium) // Assuming selectedMedium is either 'english' or 'gujarati'
+          .collection(
+              selectedStandard) // Assuming selectedStandard is either 'kg1' or 'kg2'
+          .doc(uid.toString())
+          .get();
+
+      if (studentDoc.exists) {
+        // Student data found, navigate to StudentInfo page with the data
+        final Map<String, dynamic> studentData = studentDoc.data()!;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StudentInfo(studentData: studentData),
+          ),
+        );
+      } else {
+        // Student data not found, show a message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Sorry, student data doesn't exist."),
+          ),
+        );
+      }
+    } catch (e) {
+      // Error occurred while searching for data
+      print('Error searching for student data: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Student card'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Please Select your child's \nMedium and Standard",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Select medium:'),
+              const SizedBox(
+                width: 30,
+              ),
+              SizedBox(
+                width: 130,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  value: selectedMedium,
+                  hint: const Text('Select Medium'),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedMedium = newValue!;
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'english',
+                      child: Text('English'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'gujarati',
+                      child: Text('Gujarati'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Select Standard:'),
+              const SizedBox(
+                width: 30,
+              ),
+              SizedBox(
+                width: 130,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  value: selectedStandard,
+                  hint: const Text('Select Standard'),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedStandard = newValue!;
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'kg1',
+                      child: Text('KG1'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'kg2',
+                      child: Text('KG2'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              searchStudentData(widget.uid);
+            },
+            style: ElevatedButton.styleFrom(
+                fixedSize: Size.fromWidth(width * 0.8)),
+            child: const Text('Next'),
+          ),
+        ],
+      ),
     );
   }
 }
