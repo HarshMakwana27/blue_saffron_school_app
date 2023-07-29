@@ -108,7 +108,9 @@ class _ContactCardState extends State<ContactCard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _openWhatsApp('9414XXX124');
+                    _openWhatsApp(
+                      '${widget.user['number']}',
+                    );
                   },
                   child: const Text('Send message'),
                 ),
@@ -132,9 +134,9 @@ class _ContactCardState extends State<ContactCard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _showCallOptionsDialog('9414XXX124');
+                    _showCallOptionsDialog('${widget.user['number']}');
                   },
-                  child: const Text('Call 9414XXX124'),
+                  child: Text(' call ${widget.user['number']}'),
                 ),
                 const Icon(
                   CupertinoIcons.arrow_up_right,

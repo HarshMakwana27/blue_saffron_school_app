@@ -33,7 +33,7 @@ class _StepperCodeState extends State<StepperCode> {
                 _index += 1;
               });
             } else {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => widget.pageIndex == 0
                       ? const TakeAttendance()

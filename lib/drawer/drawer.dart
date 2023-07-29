@@ -61,10 +61,7 @@ class MainDrawer extends StatelessWidget {
                     //   'Pre-School',
                     //   style: TextStyle(color: Colors.white, fontSize: 20),
                     // ),
-                    CircleAvatar(
-                      radius: width * 0.1,
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    ),
+
                     Text(
                       name.capitalize(),
                       style: const TextStyle(fontSize: 18, color: Colors.white),

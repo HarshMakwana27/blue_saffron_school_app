@@ -100,9 +100,7 @@ class StudentInfo extends StatelessWidget {
           CircleAvatar(
             radius: 50,
             backgroundColor: Colors.grey,
-            foregroundImage: studentData['gender'] == 'male'
-                ? const AssetImage('assets/images/profile.png')
-                : const AssetImage('assets/images/profilegirl.png'),
+            foregroundImage: NetworkImage(studentData['imageurl']),
           ),
         ],
       ),
@@ -153,9 +151,13 @@ class _MedStdforInfoState extends State<MedStdforInfo> {
           ),
         );
       }
-    } catch (e) {
+    } catch (error) {
       // Error occurred while searching for data
-      print('Error searching for student data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
     }
   }
 

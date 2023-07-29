@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school/screens/inHomeScreen/student_info.dart';
@@ -13,9 +14,52 @@ class StudentTile extends StatelessWidget {
 
   final Map<String, dynamic> student;
 
+  void _deleteStudent(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirm Delete"),
+          content: const Text("Are you sure you want to delete this document?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                await _performDelete(); // Call the actual delete operation
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _performDelete() async {
+    try {
+      final DocumentReference documentRef = FirebaseFirestore.instance
+          .collection('students')
+          .doc('${student['medium']}/${student['standard']}/${student['uid']}');
+      await documentRef.delete();
+      print('Document deleted successfully');
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onLongPress: () {
+        _deleteStudent(context);
+      },
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => StudentInfo(

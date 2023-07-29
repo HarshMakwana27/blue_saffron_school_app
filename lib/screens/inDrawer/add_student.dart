@@ -1,6 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:school/model/student.dart';
 
 import 'package:school/widgets/student_tile.dart';
@@ -27,11 +33,13 @@ class _AddStudentState extends State<AddStudent> {
   Standard standard = Standard.kg1;
 
   bool isLoading = false;
+  String? imageUrl;
+
+  XFile? imageFile;
 
   void isSuccessFun() {
     showDialog(
       context: context,
-      barrierLabel: 'okay',
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
@@ -68,12 +76,6 @@ class _AddStudentState extends State<AddStudent> {
               const Text("'Student added to the list'"),
               const SizedBox(
                 height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Add more Students"),
               ),
             ],
           ),
@@ -135,6 +137,85 @@ class _AddStudentState extends State<AddStudent> {
     );
   }
 
+  Widget _buildImageWidget() {
+    if (imageFile != null) {
+      return GestureDetector(
+        onTap: selectImage,
+        onLongPress: selectImageFromCamera,
+        child: Image.file(File(imageFile!.path)),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: selectImage,
+            icon: const Icon(Icons.add_a_photo),
+          ),
+          const SizedBox(width: 20),
+          IconButton(
+            onPressed: selectImageFromCamera,
+            icon: const Icon(Icons.camera_alt),
+          ),
+        ],
+      );
+    }
+  }
+
+  Future<void> selectImageFromCamera() async {
+    try {
+      final selectedImage =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (selectedImage != null) {
+        setState(() {
+          imageFile = selectedImage;
+          uploadImage();
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
+  // Function to select an image from the gallery
+  Future<void> selectImage() async {
+    try {
+      final selectedImage = await ImagePicker()
+          .pickImage(source: ImageSource.gallery, maxWidth: 100);
+      if (selectedImage != null) {
+        setState(() {
+          imageFile = selectedImage;
+          uploadImage();
+        });
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> uploadImage() async {
+    try {
+      final storageRef =
+          FirebaseStorage.instance.ref().child('student_images/${uuid.v4()}');
+      await storageRef.putFile(File(imageFile!.path));
+      imageUrl = await storageRef.getDownloadURL();
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
+  }
+
   void saveInfo() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -145,6 +226,16 @@ class _AddStudentState extends State<AddStudent> {
       final studentUuid = uuid.v4();
 
       try {
+        if (imageUrl == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text("Please upload the student's image."),
+            ),
+          );
+          isLoading = false;
+          return;
+        }
+
         await FirebaseFirestore.instance
             .collection('students')
             .doc('${medium.name}/${standard.name}/$uid')
@@ -155,9 +246,11 @@ class _AddStudentState extends State<AddStudent> {
           'gender': gender.name.toString(),
           'medium': medium.name.toString(),
           'standard': standard.name.toString(),
+          'imageurl': imageUrl
         });
         setState(() {
           isLoading = false;
+          Navigator.of(context).pop;
           isSuccessFun();
         });
       } on FirebaseException catch (error) {
@@ -347,6 +440,13 @@ class _AddStudentState extends State<AddStudent> {
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                Text('Upload imgae'),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: _buildImageWidget(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

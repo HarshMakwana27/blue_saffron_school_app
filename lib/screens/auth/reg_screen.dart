@@ -21,7 +21,7 @@ class _RegScreenState extends State<RegScreen> {
   bool _isVerified = false;
 
   bool _isLoading = false;
-
+  String number = '';
   String _email = '';
   String _password = '';
 
@@ -131,7 +131,8 @@ class _RegScreenState extends State<RegScreen> {
             'name': _name,
             'email': _email,
             'uid': _uid,
-            'isStudent': true
+            'isStudent': true,
+            'number': number,
           });
         } else {
           await FirebaseFirestore.instance
@@ -141,7 +142,8 @@ class _RegScreenState extends State<RegScreen> {
             'name': _name,
             'email': _email,
             'uid': _uid,
-            'isStudent': false
+            'isStudent': false,
+            'number': number,
           });
         }
         setState(() {
@@ -308,6 +310,27 @@ class _RegScreenState extends State<RegScreen> {
                       },
                       onSaved: (value) {
                         _key = int.tryParse(value!)!;
+                      },
+                    ),
+                  if (_isVerified)
+                    TextFormField(
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: const InputDecoration(
+                          label: Text('phone number'),
+                          icon: Icon(Icons.card_giftcard)),
+                      keyboardType: TextInputType.number,
+                      cursorWidth: 1,
+                      validator: (value) {
+                        if (int.tryParse(value!) == null) {
+                          return 'Must be a number';
+                        }
+                        if (value.trim().length != 10) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        number = value!;
                       },
                     ),
                   const SizedBox(
