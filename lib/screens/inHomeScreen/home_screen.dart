@@ -7,14 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:school/drawer/drawer.dart';
 import 'package:school/main.dart';
-
 import 'package:school/screens/inHomeScreen/announce.dart';
 import 'package:school/screens/inHomeScreen/attendance_list.dart';
 import 'package:school/screens/inHomeScreen/contact.dart';
-import 'package:school/screens/inHomeScreen/medstdInfo.dart';
-
-import 'package:school/screens/inHomeScreen/stepper.dart';
-
+import 'package:school/screens/inHomeScreen/fetch_screen.dart';
+import 'package:school/screens/inHomeScreen/student_attendance.dart';
+import 'package:school/screens/inHomeScreen/students_list.dart';
+import 'package:school/screens/inHomeScreen/takeattendance.dart';
 import 'package:school/widgets/construction.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final date = DateFormat('dd').format(DateTime.now());
   final month = DateFormat('MMMM').format(DateTime.now());
   final day = DateFormat('EEEE').format(DateTime.now());
+
+  String _selectedMedium = 'english';
+  String _selectedStandard = 'kg1';
 
   final firebaseAuthUid = kfirebaseauth.currentUser!.uid;
 
@@ -62,6 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -69,8 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(children: [
         Container(
+          margin: EdgeInsets.only(bottom: height * 0.02),
           padding: const EdgeInsets.only(top: 5, bottom: 30),
-          height: 290,
+          height: height * 0.37,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
             borderRadius: const BorderRadius.only(
@@ -122,7 +127,73 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: width * 0.03, vertical: height * 0.02),
+          child: Row(
+            children: [
+              SizedBox(
+                width: width * 0.45,
+                child: DropdownButtonFormField(
+                  value: _selectedMedium,
+                  decoration: const InputDecoration(
+                    labelText: 'Medium',
+                    border: OutlineInputBorder(),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'english',
+                      child: Text('English'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'gujarati',
+                      child: Text('Gujarati'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedMedium = value!;
+                    });
+                  },
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: width * 0.45,
+                child: DropdownButtonFormField(
+                  value: _selectedStandard,
+                  decoration: const InputDecoration(
+                    labelText: 'Standard',
+                    border: OutlineInputBorder(),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'kg1',
+                      child: Text('Kg1'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'kg2',
+                      child: Text('KG2'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'nursery',
+                      child: Text('Nursery'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedStandard = value!;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
         Expanded(
             child: FutureBuilder<int>(
                 future: flag,
@@ -148,7 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const StepperCode(0),
+                                builder: (ctx) => TakeAttendance(
+                                    selectedMedium: _selectedMedium,
+                                    selectedStandard: _selectedStandard),
                               ));
                             },
                             child: Card(
@@ -184,7 +257,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const StepperCode(1),
+                                builder: (ctx) => StudentList(
+                                    selectedMedium: _selectedMedium,
+                                    selectedStandard: _selectedStandard),
                               ));
                             },
                             child: Card(
@@ -218,7 +293,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const Attendancelist(),
+                                builder: (ctx) => Attendancelist(
+                                  selectedMedium: _selectedMedium,
+                                  selectedStandard: _selectedStandard,
+                                ),
                               ));
                             },
                             child: Card(
@@ -252,8 +330,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => MedStdforInfo(
-                                    uid: uid!, forAttendance: true),
+                                builder: (ctx) => StudentAttendanceListScreen(
+                                  studentUID: uid.toString(),
+                                  selectedMedium: _selectedMedium,
+                                  selectedStandard: _selectedStandard,
+                                ),
                               ));
                             },
                             child: Card(
@@ -382,9 +463,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => MedStdforInfo(
+                                builder: (ctx) => FetchScreen(
                                   uid: uid!,
-                                  forAttendance: false,
+                                  selectedMedium: _selectedMedium,
+                                  selectedStandard: _selectedStandard,
                                 ),
                               ));
                             },

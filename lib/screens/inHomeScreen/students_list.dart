@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:school/widgets/student_tile.dart';
-import 'package:school/screens/inHomeScreen/stepper.dart';
 
 class StudentList extends StatefulWidget {
-  const StudentList({
-    super.key,
-  });
+  const StudentList(
+      {super.key,
+      required this.selectedMedium,
+      required this.selectedStandard});
+
+  final String selectedMedium;
+  final String selectedStandard;
 
   @override
   State<StudentList> createState() {
@@ -18,7 +21,8 @@ class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     final usersStream = FirebaseFirestore.instance
-        .collection('students/$medium/$standard')
+        .collection(
+            'students/${widget.selectedMedium}/${widget.selectedStandard}')
         .snapshots();
     return Scaffold(
       appBar: AppBar(
@@ -31,9 +35,9 @@ class _StudentListState extends State<StudentList> {
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Row(
                 children: [
-                  Text(medium.capitalize()),
+                  Text(widget.selectedMedium.capitalize()),
                   const Icon(Icons.arrow_right),
-                  Text(standard)
+                  Text(widget.selectedStandard)
                 ],
               ),
             ),

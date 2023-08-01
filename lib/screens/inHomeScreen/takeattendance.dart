@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:school/widgets/attendance_tile.dart';
-import 'package:school/screens/inHomeScreen/stepper.dart';
 
 class AttendanceData {
   final String uid;
@@ -15,9 +14,13 @@ class AttendanceData {
 
 class TakeAttendance extends StatefulWidget {
   const TakeAttendance({
+    required this.selectedMedium,
+    required this.selectedStandard,
     super.key,
   });
 
+  final String selectedMedium;
+  final String selectedStandard;
   @override
   State<TakeAttendance> createState() {
     return _TakeAttendanceState();
@@ -42,7 +45,8 @@ class _TakeAttendanceState extends State<TakeAttendance> {
     // Save the attendance data to Firestore
     try {
       var docRef = FirebaseFirestore.instance
-          .collection('attendance_records/$medium/$standard')
+          .collection(
+              'attendance_records/${widget.selectedMedium}/${widget.selectedStandard}')
           .doc(formattedDate);
 
       var existingDoc = await docRef.get();
@@ -121,7 +125,8 @@ class _TakeAttendanceState extends State<TakeAttendance> {
   @override
   Widget build(BuildContext context) {
     final usersStream = FirebaseFirestore.instance
-        .collection('students/$medium/$standard')
+        .collection(
+            'students/${widget.selectedMedium}/${widget.selectedStandard}')
         .snapshots();
     return Scaffold(
       appBar: AppBar(

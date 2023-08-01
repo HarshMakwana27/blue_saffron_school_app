@@ -4,9 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:school/screens/inHomeScreen/student_attendance.dart';
 import 'package:school/widgets/attendance_tile.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Attendancelist extends StatefulWidget {
-  const Attendancelist({super.key});
+  const Attendancelist(
+      {super.key,
+      required this.selectedMedium,
+      required this.selectedStandard});
+
+  final String selectedMedium;
+  final String selectedStandard;
 
   @override
   State<Attendancelist> createState() {
@@ -15,127 +22,77 @@ class Attendancelist extends StatefulWidget {
 }
 
 class _AttendancelistState extends State<Attendancelist> {
-  String _selectedMedium = 'english';
-  String _selectedStandard = 'kg1';
   DateTime _selectedDate = DateTime.now();
+
+  // List<TimeRegion> _getTimeRegions() {
+  //   final List<TimeRegion> regions = <TimeRegion>[];
+  //   regions.add(TimeRegion(
+  //     startTime: DateTime(2023, 1, 1, 00, 0, 0),
+  //     endTime: DateTime(2025, 1, 29, 24, 0, 0),
+  //     recurrenceRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SAT,SUN',
+  //     color: Color.fromARGB(250, 224, 0, 0),
+  //   ));
+
+  //   return regions;
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Choose Medium and Standard"),
+        title: const Text("Attendance list"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Selected Month',
-            textAlign: TextAlign.center,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: _selectedDate,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      _selectedDate = pickedDate;
-                    });
-                  }
-                },
-                child: Text(
-                  DateFormat('MMMM yyyy').format(_selectedDate),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            color: Colors.green,
-            height: 0.5,
-            width: 150,
-          ),
-          SizedBox(
-            width: 150,
-            child: DropdownButton<String>(
-              isExpanded: true,
-              alignment: Alignment.center,
-              value: _selectedMedium,
-              hint: const Text('Select Medium'),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedMedium = newValue!;
-                });
-              },
-              items: const [
-                DropdownMenuItem(
-                  value: 'english',
-                  child: Text('English'),
-                ),
-                DropdownMenuItem(
-                  value: 'gujarati',
-                  child: Text('Gujarati'),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            const Text(
+              "Selected Month",
             ),
-          ),
-          SizedBox(
-            width: 150,
-            child: DropdownButton<String>(
-              isExpanded: true,
-              alignment: Alignment.center,
-              value: _selectedStandard,
-              hint: const Text('Select Standard'),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedStandard = newValue!;
-                });
-              },
-              items: const [
-                DropdownMenuItem(
-                  value: 'kg1',
-                  child: Text('KG1'),
-                ),
-                DropdownMenuItem(
-                  value: 'kg2',
-                  child: Text('KG2'),
-                ),
+
+            SfCalendar(
+              firstDayOfWeek: 1,
+              showNavigationArrow: true,
+              todayHighlightColor: Colors.lightGreen,
+              showDatePickerButton: true,
+              cellBorderColor:
+                  Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              view: CalendarView.month,
+              specialRegions: [
+                TimeRegion(
+                    startTime: DateTime(2023, 08, 1),
+                    endTime: DateTime(2023, 09, 01))
               ],
+              onSelectionChanged: (calendarSelectionDetails) {
+                _selectedDate = calendarSelectionDetails.date!;
+              },
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (_selectedMedium.isNotEmpty && _selectedStandard.isNotEmpty) {
+
+            const Spacer(),
+
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AttendanceListScreen(
                       selectedDate: _selectedDate,
-                      selectedMedium: _selectedMedium,
-                      selectedStandard: _selectedStandard,
+                      selectedMedium: widget.selectedMedium,
+                      selectedStandard: widget.selectedStandard,
                     ),
                   ),
                 );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please select Medium and Standard.'),
-                  ),
-                );
-              }
-            },
-            child: const Text('Proceed'),
-          ),
-        ],
+              },
+              style: ElevatedButton.styleFrom(
+                  fixedSize: Size.fromWidth(width * 0.9)),
+              child: const Text('Proceed'),
+            ),
+            // SfCalendar(
+            //   view: CalendarView.timelineWorkWeeks,
+            // )
+          ],
+        ),
       ),
     );
   }
