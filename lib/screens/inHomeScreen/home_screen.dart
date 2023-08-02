@@ -74,7 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(children: [
         Container(
           margin: EdgeInsets.only(bottom: height * 0.02),
-          padding: const EdgeInsets.only(top: 5, bottom: 30),
+          padding: const EdgeInsets.only(
+            top: 5,
+            left: 10,
+            bottom: 15,
+          ),
           height: height * 0.37,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
@@ -86,43 +90,63 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [],
-              ),
-              Text(
-                day,
-                style: GoogleFonts.aboreto(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    wordSpacing: 3,
-                    letterSpacing: 1.5),
-                textAlign: TextAlign.center,
-              ),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                date,
-                style: const TextStyle(fontSize: 40, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                month,
+                '$date $month',
                 style: const TextStyle(fontSize: 15, color: Colors.white),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
               ),
-              const Spacer(),
               Text(
-                day == 'Sunday' ? 'HOLIDAY' : 'School Day',
+                day,
                 style: GoogleFonts.aboreto(
-                    fontSize: 25,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     wordSpacing: 3,
                     letterSpacing: 1.5),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(3),
+                          bottomLeft: Radius.circular(3)),
+                      shape: BoxShape.rectangle,
+                      border: Border(),
+                      color: Colors.white,
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      day == 'Sunday' ? 'Holiday' : 'School Day',
+                      style: GoogleFonts.aboreto(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Image.asset(
+                  'assets/images/schoolday.png',
+                  alignment: Alignment.bottomLeft,
+                  height: height * 0.15,
+                ),
               ),
             ],
           ),

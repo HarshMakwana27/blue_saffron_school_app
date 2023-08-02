@@ -33,18 +33,19 @@ class _AttendanceTileState extends State<AttendanceTile> {
       onTap: () {},
       title: Text(
         widget.student['name'].toString().capitalize(),
-        style: Theme.of(context).textTheme.titleLarge,
+        maxLines: 1,
+        softWrap: true,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
-      subtitle: Row(
-        children: [
-          Text('uuid : ${widget.student['uid'].toString().capitalize()}')
-        ],
-      ),
+      subtitle: Text('Uid : ${widget.student['uid'].toString().capitalize()}'),
       trailing: ToggleSwitch(
-        fontSize: 10,
-        minWidth: 70,
+        customTextStyles: const [
+          TextStyle(letterSpacing: 0, fontSize: 10),
+          TextStyle(letterSpacing: 0, fontSize: 10)
+        ],
+        minWidth: 60,
         initialLabelIndex: 1,
-        minHeight: 35,
+        minHeight: 30,
         cornerRadius: 7,
         activeFgColor: Colors.white,
         inactiveBgColor: Colors.grey,
@@ -56,7 +57,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
         ],
         activeBgColors: const [
           [Colors.lightGreen],
-          [Colors.red]
+          [Colors.redAccent]
         ],
         onToggle: (index) {
           if (index == 0) {

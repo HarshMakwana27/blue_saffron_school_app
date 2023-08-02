@@ -141,7 +141,7 @@ class _TakeAttendanceState extends State<TakeAttendance> {
               child: Text(
                 'Today\'s Date: ${DateFormat('dd MMMM yyyy').format(DateTime.now())}',
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
