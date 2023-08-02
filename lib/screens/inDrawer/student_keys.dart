@@ -5,7 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-final _db = FirebaseDatabase.instance;
+final kdbref = FirebaseDatabase.instance;
 
 enum UserOption { student, teacher }
 
@@ -37,11 +37,11 @@ class _StudentKeyState extends State<StudentKey> {
       try {
         if (selectedOption == UserOption.student) {
           // Save Student UID and Key
-          await _db.ref('students/$uid').set({'key': key});
+          await kdbref.ref('students/$uid').set({'key': key});
           Navigator.of(context).pop();
         } else if (selectedOption == UserOption.teacher) {
           // Save Teacher UID and Key
-          await _db.ref('teachers/$uid').set({'key': key});
+          await kdbref.ref('teachers/$uid').set({'key': key});
           Navigator.of(context).pop();
         }
 
@@ -196,7 +196,7 @@ class KeysListPage extends StatefulWidget {
 
 class _KeysListPageState extends State<KeysListPage> {
   Future<Map<String, dynamic>> fetchStudentData() async {
-    final dataSnapshot = await _db.ref('students').once();
+    final dataSnapshot = await kdbref.ref('students').once();
     final data = dataSnapshot.snapshot.value;
     if (data != null && data is Map<dynamic, dynamic>) {
       final Map<String, dynamic> typedData = Map<String, dynamic>.from(data);
@@ -206,7 +206,7 @@ class _KeysListPageState extends State<KeysListPage> {
   }
 
   Future<Map<String, dynamic>> fetchTeacherData() async {
-    final dataSnapshot = await _db.ref('teachers').once();
+    final dataSnapshot = await kdbref.ref('teachers').once();
     final data = dataSnapshot.snapshot.value;
 
     if (data != null && data is Map<dynamic, dynamic>) {
@@ -219,7 +219,7 @@ class _KeysListPageState extends State<KeysListPage> {
   Future<void> deleteKey(String uid, String userType) async {
     try {
       // Remove the key from the database based on the user type (students or teachers)
-      await _db.ref('$userType/$uid').remove();
+      await kdbref.ref('$userType/$uid').remove();
 
       // Show a success message or perform any other actions after deletion
       setState(() {

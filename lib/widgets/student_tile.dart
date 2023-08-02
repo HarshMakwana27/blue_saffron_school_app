@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,10 +71,13 @@ class StudentTile extends StatelessWidget {
                   studentData: student,
                 )));
       },
-      leading: Image.network(student['imageurl']),
+      leading: CircleAvatar(
+        foregroundImage: NetworkImage(student['imageurl']),
+      ),
       title: Text(
         student['name'].toString().capitalize(),
-        style: Theme.of(context).textTheme.titleLarge,
+        softWrap: true,
+        style: Theme.of(context).textTheme.titleSmall,
       ),
       subtitle: Row(
         children: [Text('Uid : ${student['uid'].toString().capitalize()}')],
