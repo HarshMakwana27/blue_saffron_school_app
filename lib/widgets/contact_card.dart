@@ -91,58 +91,41 @@ class _ContactCardState extends State<ContactCard> {
               children: [
                 Text(
                   '${widget.user['name']}'.capitalize(),
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(),
-                Text(
-                  widget.user['isStudent'] ? 'Parent' : 'Teacher',
-                  style: Theme.of(context).textTheme.titleSmall,
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/WhatsApp_icon.png',
-                  width: 30,
+                IconButton(
+                    onPressed: () {
+                      _showCallOptionsDialog('${widget.user['number']}');
+                    },
+                    icon: const Icon(Icons.call)),
+                const SizedBox(
+                  width: 5,
                 ),
-                TextButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     _openWhatsApp(
                       '${widget.user['number']}',
                     );
                   },
-                  child: const Text('Send message'),
+                  child: Image.asset(
+                    'assets/images/WhatsApp_icon.png',
+                    width: 30,
+                  ),
                 ),
-                const Icon(
-                  CupertinoIcons.arrow_up_right,
-                  size: 12,
-                )
               ],
             ),
-            Row(
-              children: [
-                const SizedBox(
-                  width: 5,
-                ),
-                const Icon(
-                  Icons.call,
-                  color: Colors.black,
-                ),
-                const SizedBox(
-                  width: 2,
-                ),
-                TextButton(
-                  onPressed: () {
-                    _showCallOptionsDialog('${widget.user['number']}');
-                  },
-                  child: Text(' call ${widget.user['number']}'),
-                ),
-                const Icon(
-                  CupertinoIcons.arrow_up_right,
-                  size: 12,
-                )
-              ],
+            TextButton(
+              onPressed: () {
+                _showCallOptionsDialog('${widget.user['number']}');
+              },
+              child: Text(
+                '${widget.user['number']}',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
+              ),
             ),
           ],
         ),

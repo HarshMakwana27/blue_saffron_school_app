@@ -94,11 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Text(
-                '$date $month',
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                textAlign: TextAlign.start,
-              ),
-              Text(
                 day,
                 style: GoogleFonts.aboreto(
                     fontSize: 15,
@@ -106,6 +101,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.white,
                     wordSpacing: 3,
                     letterSpacing: 1.5),
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                '$date $month',
+                style: TextStyle(
+                    fontSize: 14, color: Colors.white.withOpacity(0.7)),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(
@@ -129,11 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(10),
                     child: Text(
                       day == 'Sunday' ? 'Holiday' : 'School Day',
-                      style: GoogleFonts.aboreto(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                       textAlign: TextAlign.end,
                     ),
                   ),
@@ -141,11 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Image.asset(
-                  'assets/images/schoolday.png',
+                  day != 'Sunday'
+                      ? 'assets/images/schoolday.png'
+                      : 'assets/images/holiday.png',
                   alignment: Alignment.bottomLeft,
-                  height: height * 0.15,
+                  height: height * 0.18,
                 ),
               ),
             ],
