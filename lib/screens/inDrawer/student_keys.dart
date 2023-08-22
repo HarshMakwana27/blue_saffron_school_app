@@ -19,7 +19,7 @@ class StudentKey extends StatefulWidget {
 class _StudentKeyState extends State<StudentKey> {
   final formKey = GlobalKey<FormState>();
 
-  int? uid;
+  String? uid;
   int? key;
   UserOption? selectedOption;
 
@@ -119,7 +119,7 @@ class _StudentKeyState extends State<StudentKey> {
                     return null;
                   },
                   onSaved: (value) {
-                    uid = int.tryParse(value!)!;
+                    uid = value!.trim();
                   },
                 ),
                 TextFormField(

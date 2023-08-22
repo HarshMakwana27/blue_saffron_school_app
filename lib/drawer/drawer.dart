@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 
 import 'package:school/screens/inDrawer/about.dart';
+import 'package:school/screens/inDrawer/add_new_student.dart';
 import 'package:school/screens/inDrawer/add_student.dart';
 
 import 'package:school/screens/inDrawer/gallary_screen.dart';
@@ -77,7 +78,7 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           if (!isStudent)
-            const DrawerTile('Add new Student', Icons.add, AddStudent()),
+            const DrawerTile('Add new Student', Icons.add, ValidateUid()),
           if (isStudent)
             const DrawerTile(
                 'Contact info', Icons.contact_page, Construction()),

@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/material.dart';
+import 'package:school/main.dart';
+import 'package:school/screens/inDrawer/add_new_student.dart';
 
 class ValidateUid extends StatefulWidget {
   const ValidateUid({super.key});
@@ -14,20 +16,20 @@ class ValidateUid extends StatefulWidget {
 }
 
 class _ValidateUidState extends State<ValidateUid> {
-  final GlobalKey<FormState> _FormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isValid = false;
-  int? uid;
+  String? uid;
   int? key;
   void validate() async {
-    if (_FormKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
       try {
         // Check if the UID already exists
-        final snapshot = await FirebaseDatabase.instance
-            .ref('students/')
-            .equalTo(uid.toString())
-            .get();
-        print(snapshot.value);
-        if (snapshot.value == null) {
+
+        final snapshot = await kdbref.ref().child('students/$uid').get();
+
+        if (snapshot.exists) {
           // UID already exists, show SnackBar
 
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -41,7 +43,6 @@ class _ValidateUidState extends State<ValidateUid> {
           });
         } else {
           // UID does not exist, set it in the database
-          print('Yeas it is uniuyq');
 
           setState(() {
             _isValid = true;
@@ -58,7 +59,18 @@ class _ValidateUidState extends State<ValidateUid> {
     }
   }
 
-  void saveKey() {}
+  void saveKey() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddNewStudent(
+                uid: uid!,
+                uidKey: key!,
+              )));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -69,7 +81,7 @@ class _ValidateUidState extends State<ValidateUid> {
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
-          key: _FormKey,
+          key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +110,9 @@ class _ValidateUidState extends State<ValidateUid> {
                     return null;
                   },
                   onSaved: (value) {
-                    uid = int.parse(value!.trim());
+                    setState(() {
+                      uid = value!.trim();
+                    });
                   },
                 ),
                 const SizedBox(

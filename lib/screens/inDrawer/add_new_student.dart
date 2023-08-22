@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 
 class AddNewStudent extends StatefulWidget {
-  const AddNewStudent({super.key});
+  const AddNewStudent({super.key, required this.uid, required this.uidKey});
 
+  final String uid;
+  final int uidKey;
   @override
   State<AddNewStudent> createState() => _AddNewStudentState();
 }
