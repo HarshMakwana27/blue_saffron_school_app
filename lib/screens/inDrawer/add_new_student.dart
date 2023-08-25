@@ -283,20 +283,14 @@ class _AddNewStudentState extends State<AddNewStudent> {
           state: currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,
           title: const SizedBox(),
-          content: Column(
+          content: const Column(
             children: [],
           )),
       Step(
         state: currentStep > 3 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 3,
         title: const SizedBox(),
-        content: Text('Content of step 4'),
-      ),
-      Step(
-        state: currentStep > 4 ? StepState.complete : StepState.indexed,
-        isActive: currentStep >= 4,
-        title: const SizedBox(),
-        content: const Text('Content of step 1'),
+        content: const Text('Content of step 4'),
       ),
     ];
   }

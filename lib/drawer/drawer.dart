@@ -82,7 +82,12 @@ class MainDrawer extends StatelessWidget {
           if (isStudent)
             const DrawerTile(
                 'Contact info', Icons.contact_page, Construction()),
-          const DrawerTile('Gallary', Icons.image, GallaryScreen()),
+          DrawerTile(
+              'Gallary',
+              Icons.image,
+              GallaryScreen(
+                isTeacher: !isStudent,
+              )),
           const DrawerTile('About', Icons.info, AboutScreen()),
           if (!isStudent) const DrawerTile('Keys', Icons.key, StudentKey()),
           ListTile(
