@@ -63,7 +63,7 @@ class _ValidateUidState extends State<ValidateUid> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => AddNewStudent(
                 uid: uid!,
                 uidKey: key!,

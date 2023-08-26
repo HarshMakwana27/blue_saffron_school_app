@@ -120,7 +120,7 @@ class OtpVerificationScreen extends StatelessWidget {
                   _login(context, otpCode);
                 }
               },
-              child: Text('Verify OTP'),
+              child: const Text('Verify OTP'),
             ),
           ],
         ),

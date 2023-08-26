@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:school/drawer/widgets/drawer_tile.dart';
 
 import 'package:school/screens/inDrawer/about.dart';
-import 'package:school/screens/inDrawer/add_new_student.dart';
-import 'package:school/screens/inDrawer/add_student.dart';
 
 import 'package:school/screens/inDrawer/gallary_screen.dart';
 import 'package:school/screens/inDrawer/student_keys.dart';
+
 import 'package:school/screens/inDrawer/validate_uidkey.dart';
 
 import 'package:school/screens/inHomeScreen/splash_screen.dart';
@@ -89,7 +88,7 @@ class MainDrawer extends StatelessWidget {
                 isTeacher: !isStudent,
               )),
           const DrawerTile('About', Icons.info, AboutScreen()),
-          if (!isStudent) const DrawerTile('Keys', Icons.key, StudentKey()),
+          if (!isStudent) const DrawerTile('Keys', Icons.key, KeysListPage()),
           ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
