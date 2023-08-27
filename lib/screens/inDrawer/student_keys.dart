@@ -35,61 +35,28 @@ class _KeysListPageState extends State<KeysListPage> {
     return {}; // Return an empty map if data is not a valid map
   }
 
-  Future<void> deleteKey(String uid, String userType) async {
-    try {
-      // Remove the key from the database based on the user type (students or teachers)
-      await kdbref.ref('$userType/$uid').remove();
+  // Future<void> deleteKey(String uid, String userType) async {
+  //   try {
+  //     // Remove the key from the database based on the user type (students or teachers)
+  //     await kdbref.ref('$userType/$uid').remove();
 
-      // Show a success message or perform any other actions after deletion
-      setState(() {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Key for UID $uid has been deleted.")),
-        );
-      });
-    } on FirebaseException catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error deleting the key: ${error.message}")),
-      );
-    }
-  }
+  //     // Show a success message or perform any other actions after deletion
+  //     setState(() {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("Key for UID $uid has been deleted.")),
+  //       );
+  //     });
+  //   } on FirebaseException catch (error) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Error deleting the key: ${error.message}")),
+  //     );
+  //   }
+  // }
 
   Widget _buildUserListTile(String uid, String userType, String userKey) {
     return ListTile(
       title: Text("UID: $uid"),
-      subtitle: Text("Key: $userKey"),
-      trailing: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-            foregroundColor: Colors.white),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text("Delete Key"),
-              content:
-                  Text("Are you sure you want to delete the key for UID $uid?"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      foregroundColor: Colors.white),
-                  onPressed: () {
-                    // Call the deleteKey function here to delete the key from the database
-                    deleteKey(uid, userType);
-                    Navigator.pop(context); // Close the dialog
-                  },
-                  child: const Text("Delete"),
-                ),
-              ],
-            ),
-          );
-        },
-        child: const Text("Delete"),
-      ),
+      trailing: Text("Key: $userKey"),
     );
   }
 

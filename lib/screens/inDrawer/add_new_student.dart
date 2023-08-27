@@ -173,14 +173,20 @@ class _AddNewStudentState extends State<AddNewStudent> {
       setState(() {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Successfully added student")));
+          const SnackBar(
+            content: Text("Successfully added student"),
+          ),
+        );
         isLoading = false;
       });
       Navigator.of(context).pop();
     } on FirebaseException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.message ?? "Authentication Failed")));
+        SnackBar(
+          content: Text(error.message ?? "Authentication Failed"),
+        ),
+      );
       setState(() {
         isLoading = false;
         Navigator.of(context).pop();

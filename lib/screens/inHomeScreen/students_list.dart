@@ -66,6 +66,9 @@ class _StudentListState extends State<StudentList> {
                     itemCount: loadedMessage.length,
                     itemBuilder: (ctx, index) {
                       // Check if the index is valid
+                      if (loadedMessage.isEmpty) {
+                        return const Center(child: Text("No data"));
+                      }
                       if (index >= 0 && index < loadedMessage.length) {
                         final student = loadedMessage[index].data();
                         return StudentTile(student);

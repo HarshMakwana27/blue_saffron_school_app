@@ -53,7 +53,7 @@ class StudentAttendanceListScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              if (snapshot.data == null) {
+              if (snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text('No data'),
                 );
@@ -77,6 +77,9 @@ class StudentAttendanceListScreen extends StatelessWidget {
                         attendanceData['date'].toString().substring(6),
                       ),
                     ));
+                    if (attendanceData['attendance'][studentUID] == null) {
+                      return const Center(child: SizedBox());
+                    }
                     return ListTile(
                       title: Text(date),
                       trailing: Text(
