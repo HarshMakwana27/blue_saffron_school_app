@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:school/main.dart';
 import 'package:school/screens/inHomeScreen/student_info.dart';
 
 extension StringExtensions on String {
@@ -49,6 +50,8 @@ class StudentTile extends StatelessWidget {
       String imageUrl = student['imageurl'];
 
       await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+
+      await kdbref.ref('students/${student["uid"]}').remove();
 
       final DocumentReference documentRef = FirebaseFirestore.instance
           .collection('students')

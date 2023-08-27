@@ -35,24 +35,6 @@ class _KeysListPageState extends State<KeysListPage> {
     return {}; // Return an empty map if data is not a valid map
   }
 
-  // Future<void> deleteKey(String uid, String userType) async {
-  //   try {
-  //     // Remove the key from the database based on the user type (students or teachers)
-  //     await kdbref.ref('$userType/$uid').remove();
-
-  //     // Show a success message or perform any other actions after deletion
-  //     setState(() {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text("Key for UID $uid has been deleted.")),
-  //       );
-  //     });
-  //   } on FirebaseException catch (error) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text("Error deleting the key: ${error.message}")),
-  //     );
-  //   }
-  // }
-
   Widget _buildUserListTile(String uid, String userType, String userKey) {
     return ListTile(
       title: Text("UID: $uid"),
