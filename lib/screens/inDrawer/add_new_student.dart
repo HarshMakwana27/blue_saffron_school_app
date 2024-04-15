@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -127,12 +127,23 @@ class _AddNewStudentState extends State<AddNewStudent> {
 
   Future<void> uploadImage() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final storageRef =
           FirebaseStorage.instance.ref().child('student_images/${widget.uid}');
       await storageRef.putFile(File(_pickedFile!.path));
 
       imageUrl = await storageRef.getDownloadURL();
+
+      setState(() {
+        isLoading = false;
+        currentStep += 1;
+      });
     } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -254,9 +265,6 @@ class _AddNewStudentState extends State<AddNewStudent> {
                 );
               } else {
                 uploadImage();
-                setState(() {
-                  currentStep += 1;
-                });
               }
             } else if (isLastStep) {
               saveInfo();

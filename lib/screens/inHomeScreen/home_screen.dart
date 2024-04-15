@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? 'assets/images/schoolday.png'
                       : 'assets/images/holiday.png',
                   alignment: Alignment.bottomLeft,
-                  height: height * 0.18,
+                  height: height * 0.16,
                 ),
               ),
             ],
