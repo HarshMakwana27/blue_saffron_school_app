@@ -82,13 +82,7 @@ Blue Saffron School App is a feature-rich mobile application built using Flutter
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/9d8ecc55-b4a6-4ff7-acb4-a7d6d2b6f48d" alt="Create" height="450">
 
 
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/49dff6f6-5217-44f8-be38-37943b1b450c" alt="picker" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/ff42dce1-07ef-4618-9cca-d2a3aae1da9b" alt="list" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/636dbd3e-f146-4001-96be-4358f37eadcb" alt="attlist" height="450">
 
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/b6d17fd3-ef30-4805-96af-aa193532c17c" alt="attlist" height="450">
-
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/7fd95b11-8730-42e1-b04c-4793be4bad77" alt="list" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/592c0c7a-1204-4775-90a0-c3b164b5c0bd" alt="list" height="450">
 
 
@@ -99,12 +93,6 @@ Adding a student
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/68809255-9085-47c9-903a-71e665d3afea" alt="list" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/561c6faf-6b56-4dbc-9eed-aec44b47a7a1" alt="list" height="450">
 
-
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/447aa433-ee8a-4dcc-9b92-227c5860333c" alt="list" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/621f7cfb-f5f4-4bb5-96c8-d6ad2731022d" alt="list" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/fed2df8d-bc64-408c-936e-6c64a919581f" alt="list" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/c728a593-8598-4968-9ba0-39c7625198fe" alt="list" height="450">
-<img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/1038994e-62f0-4eb4-b645-25dcbeed5b90" alt="list" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/4a626104-4eb9-41e4-b570-cedd32944b46" alt="list" height="450">
 <img src="https://github.com/HarshMakwana27/blue_saffron_school_app/assets/133812075/5d1469ea-d1f0-4363-9ff1-8e8a79bba250" alt="list" height="450">
 
